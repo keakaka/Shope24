@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<select id="checkId" resultType="string" parameterType="membervo">
+		<![CDATA[	 
+			select id
+			from member 
+			where id = (select hex( aes_encrypt( #{ id }, #{key} ) )) )
+		]]>
+	</select>
+	<insert id="insertMember" parameterType="membervo">
+		<![CDATA[	 
+			insert into member values( null, 
+				(select hex( aes_encrypt( #{ id }, #{ key } ) )), (SELECT SHA2(#{ password }, 512)), (select hex( aes_encrypt( #{ name }, #{ key } ) )), (select hex( aes_encrypt( #{ email }, #{ key } ) )),
+				(select hex( aes_encrypt( #{ birth }, #{ key } ) )), #{ gender }, (select hex( aes_encrypt( #{ phone }, #{ key } ) )), current_timestamp(), default, 'Y'
+			)
+		]]>
+	</insert>
+</mapper>
