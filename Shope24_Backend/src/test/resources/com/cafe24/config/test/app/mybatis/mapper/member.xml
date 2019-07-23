@@ -5,15 +5,27 @@
 		<![CDATA[	 
 			select id
 			from member 
-			where id = (select hex( aes_encrypt( #{ id }, #{key} ) )) )
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )
 		]]>
 	</select>
 	<insert id="insertMember" parameterType="membervo">
 		<![CDATA[	 
 			insert into member values( null, 
-				(select hex( aes_encrypt( #{ id }, #{ key } ) )), (SELECT SHA2(#{ password }, 512)), (select hex( aes_encrypt( #{ name }, #{ key } ) )), (select hex( aes_encrypt( #{ email }, #{ key } ) )),
-				(select hex( aes_encrypt( #{ birth }, #{ key } ) )), #{ gender }, (select hex( aes_encrypt( #{ phone }, #{ key } ) )), current_timestamp(), default, 'Y'
+				hex( aes_encrypt( #{ id }, #{ key } ) ), SHA2(#{ password }, 512), hex( aes_encrypt( #{ name }, #{ key } ) ), hex( aes_encrypt( #{ email }, #{ key } ) ),
+				hex( aes_encrypt( #{ birth }, #{ key } ) ), #{ gender }, hex( aes_encrypt( #{ phone }, #{ key } ) ), current_timestamp(), default, 'Y'
 			)
 		]]>
 	</insert>
+	
+	<select id="login" resultType="membervo" parameterType="membervo">
+		<![CDATA[	 
+			select no, aes_decrypt(unhex(id), #{ key }) id, convert(aes_decrypt(unhex(name), #{ key }) using utf8) name,     
+			aes_decrypt(unhex(email), #{ key }) email, aes_decrypt(unhex(birth), #{ key }) birth,     
+			gender, aes_decrypt(unhex(phone), #{ key }) phone, joinDate
+			from member     
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )      
+			and password = SHA2( #{ password }, 512 )      
+			and status = 'Y';
+		]]>
+	</select>
 </mapper>

@@ -41,16 +41,16 @@ public class MemberController {
 	
 	@ApiOperation(value="회원가입 폼 요청 URL")
 	@GetMapping("/join")
-	public JSONResult joinform() {
-		return JSONResult.success(null);
+	public ResponseEntity<JSONResult> joinform() {
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
 	}
 	
 	@ApiOperation(value="아이디 중복체크")
 	@GetMapping("/checkId")
-	public JSONResult checkId(@RequestParam(value="id") String id) {
+	public ResponseEntity<JSONResult> checkId(@RequestParam(value="id") String id) {
 		Boolean checkId = memberService.checkId(id);
 		
-		return JSONResult.success(checkId?"가입가능":"중복된 아이디");
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(checkId?"가입가능":"중복된 아이디"));
 	}
 	
 	@ApiOperation(value="회원가입")
@@ -102,9 +102,12 @@ public class MemberController {
 				
 			}
 		}
-		Boolean check = memberService.login(memberVo);
+		MemberVo vo = memberService.login(memberVo);
+		if(vo != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(vo));
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success("로그인 실패"));
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(check));
 	}
 	
 	@ApiOperation(value="마이 페이지")

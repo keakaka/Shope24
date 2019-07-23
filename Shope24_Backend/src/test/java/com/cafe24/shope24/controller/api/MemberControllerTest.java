@@ -9,18 +9,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.AfterTransaction;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.cafe24.shope24.config.app.test.AppConfig;
@@ -38,25 +44,51 @@ public class MemberControllerTest {
 	private MockMvc mockMvc;
 	
 	@Autowired
+	private SqlSession sqlSession;
+	
+	@Autowired
 	private MemberService memberService;
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+	
+	public void insertDefaultMember() {
+		MemberVo memberVo = new MemberVo();
+		memberVo.setId("keakaka");
+		memberVo.setPassword("!q2w3e4r");
+		memberVo.setName("박필");
+		memberVo.setEmail("keakaka@naver.com");
+		memberVo.setGender("M");
+		memberVo.setBirth("900512");
+		memberVo.setPhone("01062570512");
+		memberVo.setKey("FeelSoGoooooood");
+		sqlSession.insert("member.insertMember", memberVo);
+	}
+	
+	public void deleteAllMember() {
+		sqlSession.delete("test.deleteAllMember");
+		sqlSession.update("test.defaultIncrement");
+	}
 	
 	@Before	
 	public void setUp() {
 		mockMvc = MockMvcBuilders.
 			webAppContextSetup(webApplicationContext).
 			build();
+		insertDefaultMember();
+	}
+	@After
+	public void teadDown() {
+		deleteAllMember();
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_a_memberServiceDI() {
 		assertNotNull(memberService);
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_b_getJoinPage() throws Exception{
 		mockMvc.perform(get("/api/member/join")
@@ -66,13 +98,13 @@ public class MemberControllerTest {
 			
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_b_checkId() throws Exception {
 		mockMvc.perform(get("/api/member/checkId").param("id", "keakaka")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andDo(print())
+//				.andDo(print())
 				.andExpect(jsonPath("$.result", is("success")));
 	}
 	
@@ -123,10 +155,10 @@ public class MemberControllerTest {
 		
 		// success
 		memberVo = new MemberVo();
-		memberVo.setId("keakaka");
-		memberVo.setPassword("!q2w3e4r");
+		memberVo.setId("keakaka2");
+		memberVo.setPassword("!q2w3e4r2");
 		memberVo.setName("박필");
-		memberVo.setEmail("keakaka@naver.com");
+		memberVo.setEmail("keakaka2@naver.com");
 		memberVo.setGender("M");
 		memberVo.setBirth("900512");
 		memberVo.setPhone("01062570512");
@@ -136,7 +168,8 @@ public class MemberControllerTest {
 
 	}
 	
-@Ignore
+	
+//@Ignore
 	@Test
 	public void test_b_MemberLoginValid() throws Exception {
 		MemberVo memberVo = new MemberVo();
@@ -154,7 +187,7 @@ public class MemberControllerTest {
 				.andDo(print()).andExpect(status().isOk());
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_c_getMyPage() throws Exception {
 		MemberVo memberVo = new MemberVo();
@@ -164,7 +197,7 @@ public class MemberControllerTest {
 				.andDo(print()).andExpect(status().isOk());
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_d_deliveryInfo() throws Exception {
 		MemberVo memberVo = new MemberVo();
@@ -174,7 +207,7 @@ public class MemberControllerTest {
 				.andDo(print()).andExpect(status().isOk());
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_d_deliveryAdd() throws Exception {
 		DeliveryAddressVo daVo = new DeliveryAddressVo();
@@ -187,7 +220,7 @@ public class MemberControllerTest {
 				.andDo(print()).andExpect(status().isOk());
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_d_deliveryDelete() throws Exception {
 		DeliveryAddressVo daVo = new DeliveryAddressVo();
@@ -199,7 +232,7 @@ public class MemberControllerTest {
 				.andDo(print()).andExpect(status().isOk());
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_e_MyInfo() throws Exception {
 		MemberVo memberVo = new MemberVo();
@@ -209,7 +242,7 @@ public class MemberControllerTest {
 				.andDo(print()).andExpect(status().isOk());
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_e_MyInfoUpdate() throws Exception {
 		MemberVo memberVo = new MemberVo();
@@ -225,7 +258,7 @@ public class MemberControllerTest {
 	}
 	
 	
-@Ignore
+//@Ignore
 	@Test
 	public void test_f_showMyCart() throws Exception{
 		// 회원일 경우
@@ -242,18 +275,18 @@ public class MemberControllerTest {
 	}
 	
 //	@Test
-//	public void test_f_addMyCart() throws Exception{
-//		// 회원일 경우
+//	public void test_g_showMyPayInfo() throws Exception{
 //		MemberVo memberVo = new MemberVo();
 //		memberVo.setId("keakaka");
 //		
-//		mockMvc.perform(get("/api/member/addCart").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(memberVo.getId())))
+//		mockMvc.perform(get("/api/member/showPayInfo").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(memberVo.getId())))
 //				/* .andDo(print()) */.andExpect(status().isOk());
 //		
 //		// 비회원일 경우
-//		String cartOwner = "192.168.1.236";
-//		mockMvc.perform(get("/api/member/addCart").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(cartOwner)))
+//		String orderCode = "AB1234";
+//		String orderName = "박필";
+//		mockMvc.perform(get("/api/member/showPayInfo").contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(cartOwner)))
 //				.andDo(print()).andExpect(status().isOk());
-//	}
-	
+//}
+
 }

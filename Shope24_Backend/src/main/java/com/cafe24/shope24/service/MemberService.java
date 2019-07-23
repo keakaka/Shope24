@@ -22,8 +22,9 @@ public class MemberService {
 		return memberDao.insertMember(memberVo);
 	}
 
-	public Boolean login(MemberVo memberVo) {
-		return true;
+	public MemberVo login(MemberVo memberVo) {
+		
+		return memberDao.login(memberVo);
 	}
 
 	public Boolean myPage(Long memberNo) {

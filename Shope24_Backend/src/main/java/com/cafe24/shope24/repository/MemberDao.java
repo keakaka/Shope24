@@ -26,5 +26,10 @@ public class MemberDao {
 		return sqlSession.insert("member.insertMember", memberVo) == 1;
 	}
 
+	public MemberVo login(MemberVo memberVo) {
+		memberVo.setKey(key);
+		return sqlSession.selectOne("member.login", memberVo);
+	}
+
 }
  
