@@ -67,7 +67,7 @@ public class MemberControllerTest {
 	
 	public void deleteAllMember() {
 		sqlSession.delete("test.deleteAllMember");
-		sqlSession.update("test.defaultIncrement");
+		sqlSession.update("test.defaultMemberIncrement");
 	}
 	
 	@Before	
@@ -77,6 +77,7 @@ public class MemberControllerTest {
 			build();
 		insertDefaultMember();
 	}
+	
 	@After
 	public void teadDown() {
 		deleteAllMember();

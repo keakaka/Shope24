@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+	<insert id="insertCategory" parameterType="categoryvo">
+		<![CDATA[	 
+			insert into category values(
+				null, #{ name }, #{ depth }, #{ refNo }
+			)
+		]]>
+		<selectKey resultType="long" keyProperty="no" order="AFTER">
+	        SELECT LAST_INSERT_ID()
+	    </selectKey> 
+	</insert>
+	
+	<insert id="insertCategory" parameterType="categoryvo">
+		<choose>
+			<when test="groupNo == null">
+				<![CDATA[
+				insert
+				  into category
+				values ( null,
+						 #{name },
+						 ( select ifnull( max( groupNo ), 0 ) + 1
+						     from category c ),
+						 1, 
+						 0)
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				insert
+				  into category
+				values ( null,
+						 #{name },
+						 #{groupNo },
+						 #{groupSeq }, 
+						 #{depth })				
+				]]>
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<update id="updateOrederNo" parameterType="map">
+		<![CDATA[
+			update category
+			   set groupSeq = groupSeq + 1
+			 where groupNo = #{groupNo }
+			   and groupSeq >= #{groupSeq }
+		]]>	
+	</update>	
+	
+	<select id="getCategoryList" resultType="categoryvo">
+		<![CDATA[
+		  select no, name, groupNo, groupSeq, depth
+			from category
+		order by groupNo desc, groupSeq asc		
+		]]>
+	</select>
+	
+	
+</mapper>

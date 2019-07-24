@@ -5,9 +5,15 @@
 
 	<delete id="deleteAllMember">
 		delete from member
-		
 	</delete>
-	<update id="defaultIncrement">
+	<update id="defaultMemberIncrement">
 		alter table member auto_increment=1;
 	</update>
+	
+	<update id="defaultCategoryIncrement">
+		alter table category auto_increment=1;
+	</update>
+	<delete id="deleteAllCategory">
+		delete from category
+	</delete>
 </mapper>

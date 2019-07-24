@@ -4,17 +4,14 @@ public class CategoryVo {
 	
 	private Long no;
 	private String name;
-	private Long depth;
 	private Long refNo;
+	private Long level;
 	
 	public Long getNo() {
 		return no;
 	}
 	public String getName() {
 		return name;
-	}
-	public Long getDepth() {
-		return depth;
 	}
 	public Long getRefNo() {
 		return refNo;
@@ -25,15 +22,19 @@ public class CategoryVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setDepth(Long depth) {
-		this.depth = depth;
-	}
 	public void setRefNo(Long refNo) {
 		this.refNo = refNo;
 	}
+	
+	public Long getLevel() {
+		return level;
+	}
+	public void setLevel(Long level) {
+		this.level = level;
+	}
 	@Override
 	public String toString() {
-		return "CategoryVo [no=" + no + ", name=" + name + ", depth=" + depth + ", refNo=" + refNo + "]";
+		return "CategoryVo [no=" + no + ", name=" + name + ", refNo=" + refNo + ", level=" + level + "]";
 	}
 	
 	
