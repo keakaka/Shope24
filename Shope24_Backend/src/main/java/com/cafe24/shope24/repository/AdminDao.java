@@ -25,6 +25,27 @@ public class AdminDao {
 	public ArrayList<CategoryVo> getCategoryList() {
 		return (ArrayList)sqlSession.selectList("admin.getCategoryList");
 	}
+
+	public void updateGroupSeq(CategoryVo vo) {
+		sqlSession.update("admin.updateGroupSeq", vo);
+	}
+
+	public Boolean deleteCategory(CategoryVo vo) {
+		return sqlSession.delete("admin.deleteCategory", vo) == 1;
+	}
+
+	public Boolean productCheck(Long no) {
+		
+		return false;
+	}
+
+	public void groupSeqDown(CategoryVo vo) {
+		sqlSession.update("admin.groupSeqDown", vo);
+	}
+
+	public Boolean updateCategory(ArrayList<CategoryVo> list) {
+		return sqlSession.update("admin.updateCategory", list) > 0;
+	}
 	
 	
 	

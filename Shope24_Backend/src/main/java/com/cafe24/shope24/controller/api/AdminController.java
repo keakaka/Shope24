@@ -1,5 +1,6 @@
 package com.cafe24.shope24.controller.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,9 @@ public class AdminController {
 	@GetMapping("/productManager/category")
 	public ResponseEntity<JSONResult> showCategory() {
 		List<CategoryVo> list = adminService.getCategoryList();
-		
+		for(CategoryVo vo : list) {
+			System.out.println(vo);
+		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
 	}
@@ -58,8 +61,17 @@ public class AdminController {
 	
 	@ApiOperation(value="카테고리 삭제")
 	@DeleteMapping("/productManager/category")
-	public JSONResult deleteCategory() {
-		return JSONResult.success(null);
+	public JSONResult deleteCategory( @RequestBody CategoryVo vo ) {
+		Boolean check = adminService.deleteCategory(vo);
+		return JSONResult.success(check?"삭제 성공":"삭제 실패");
+	}
+	
+	@ApiOperation(value="카테고리 수정")
+	@PutMapping("/productManager/category")
+	public JSONResult UpdateCategory( @RequestBody ArrayList<CategoryVo> list  ) {
+		Boolean check = adminService.updateCategory(list);
+		
+		return JSONResult.success(check?"수정 성공":"수정 실패");
 	}
 	
 	@ApiOperation(value="상품 조회")

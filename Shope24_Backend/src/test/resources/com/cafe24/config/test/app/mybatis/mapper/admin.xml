@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="admin">
-	<insert id="insertCategory" parameterType="categoryvo">
-		<![CDATA[	 
-			insert into category values(
-				null, #{ name }, #{ depth }, #{ refNo }
-			)
-		]]>
-		<selectKey resultType="long" keyProperty="no" order="AFTER">
-	        SELECT LAST_INSERT_ID()
-	    </selectKey> 
-	</insert>
-	
+
 	<insert id="insertCategory" parameterType="categoryvo">
 		<choose>
 			<when test="groupNo == null">
@@ -33,19 +23,19 @@
 				values ( null,
 						 #{name },
 						 #{groupNo },
-						 #{groupSeq }, 
-						 #{depth })				
+						 #{groupSeq }+1, 
+						 #{depth }+1)				
 				]]>
 			</otherwise>
 		</choose>
 	</insert>
 	
-	<update id="updateOrederNo" parameterType="map">
+	<update id="updateGroupSeq" parameterType="map">
 		<![CDATA[
 			update category
 			   set groupSeq = groupSeq + 1
 			 where groupNo = #{groupNo }
-			   and groupSeq >= #{groupSeq }
+			   and groupSeq > #{groupSeq }
 		]]>	
 	</update>	
 	
@@ -53,9 +43,29 @@
 		<![CDATA[
 		  select no, name, groupNo, groupSeq, depth
 			from category
-		order by groupNo desc, groupSeq asc		
+			order by groupNo asc, groupSeq asc		
 		]]>
 	</select>
 	
+	<delete id="deleteCategory" parameterType="categoryvo">
+		<![CDATA[
+		  delete from category where no = #{ no }
+		]]>
+	</delete>
+	
+	<update id="groupSeqDown" parameterType="categoryvo">
+		<![CDATA[
+		  update category set
+		  	groupSeq = groupSeq - 1
+		  	where groupNo = #{ groupNo }
+		  	and groupSeq > #{ groupSeq }
+		]]>
+	</update>
+	
+	<update id="updateCategory" parameterType="java.util.List">
+	    <foreach collection="list" item="vo" separator=" ; ">
+	        update category set groupSeq = "#{ vo.groupSeq }", depth = "#{ vo.depth }" where no = "#{ vo.no }"
+	    </foreach>
+	</update>
 	
 </mapper>

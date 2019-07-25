@@ -4,8 +4,9 @@ public class CategoryVo {
 	
 	private Long no;
 	private String name;
-	private Long refNo;
-	private Long level;
+	private Long groupNo;
+	private Long groupSeq;
+	private Long depth;
 	
 	public Long getNo() {
 		return no;
@@ -13,8 +14,14 @@ public class CategoryVo {
 	public String getName() {
 		return name;
 	}
-	public Long getRefNo() {
-		return refNo;
+	public Long getGroupNo() {
+		return groupNo;
+	}
+	public Long getGroupSeq() {
+		return groupSeq;
+	}
+	public Long getDepth() {
+		return depth;
 	}
 	public void setNo(Long no) {
 		this.no = no;
@@ -22,20 +29,19 @@ public class CategoryVo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setRefNo(Long refNo) {
-		this.refNo = refNo;
+	public void setGroupNo(Long groupNo) {
+		this.groupNo = groupNo;
 	}
-	
-	public Long getLevel() {
-		return level;
+	public void setGroupSeq(Long groupSeq) {
+		this.groupSeq = groupSeq;
 	}
-	public void setLevel(Long level) {
-		this.level = level;
+	public void setDepth(Long depth) {
+		this.depth = depth;
 	}
 	@Override
 	public String toString() {
-		return "CategoryVo [no=" + no + ", name=" + name + ", refNo=" + refNo + ", level=" + level + "]";
+		return "CategoryVo [no=" + no + ", name=" + name + ", groupNo=" + groupNo + ", groupSeq=" + groupSeq
+				+ ", depth=" + depth + "]";
 	}
-	
 	
 }

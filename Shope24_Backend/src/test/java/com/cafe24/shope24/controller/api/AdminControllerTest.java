@@ -6,6 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.junit.After;
 import org.junit.Before;
@@ -95,7 +98,7 @@ public class AdminControllerTest {
 				.andExpect(status().isOk());
 	}
 	
-//@Ignore
+@Ignore
 	@Test
 	public void showCategory() throws Exception{
 		
@@ -110,15 +113,17 @@ public class AdminControllerTest {
 	public void insertCategory() throws Exception{
 //		insertDefaultCategory();
 		
-		CategoryVo vo = new CategoryVo();
-		vo.setName("상의");
-		mockMvc.perform(post("/api/admin/productManager/category")
-				.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(vo)))
-				.andExpect(status().isOk());
+//		CategoryVo vo = new CategoryVo();
+//		vo.setName("가방");
+//		mockMvc.perform(post("/api/admin/productManager/category")
+//				.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(vo)))
+//				.andExpect(status().isOk());
 		
 		CategoryVo vo2 = new CategoryVo();
-		vo2.setName("맨투맨");
-		vo2.setRefNo(3L);
+		vo2.setName("하의");
+		vo2.setGroupNo(1L);
+		vo2.setGroupSeq(1L);
+		vo2.setDepth(0L);
 		
 		mockMvc.perform(post("/api/admin/productManager/category")
 				.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(vo2)))
@@ -130,9 +135,82 @@ public class AdminControllerTest {
 @Ignore
 	@Test
 	public void deleteCategory() throws Exception{
+	
+		CategoryVo vo = new CategoryVo();
+		vo.setNo(5L);
+		vo.setGroupNo(1L);
+		vo.setGroupSeq(4L);
 		mockMvc.perform(delete("/api/admin/productManager/category")
-				.contentType(MediaType.APPLICATION_JSON))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(new Gson().toJson(vo)))
 				.andDo(print())
+				.andExpect(status().isOk());
+	}
+	
+//@Ignore
+	@Test
+	public void updateCategory() throws Exception{
+		List<CategoryVo> list = new ArrayList<CategoryVo>();
+		CategoryVo vo = new CategoryVo();
+		vo.setNo(1L);
+		vo.setName("의류");
+		vo.setGroupNo(1L);
+		vo.setGroupSeq(1L);
+		vo.setDepth(0L);
+		list.add(0, vo);
+		
+		vo = new CategoryVo();
+		vo.setNo(3L);
+		vo.setName("상의");
+		vo.setGroupNo(1L);
+		vo.setGroupSeq(2L);
+		vo.setDepth(1L);
+		list.add(1, vo);
+		
+		vo = new CategoryVo();
+		vo.setNo(10L);
+		vo.setName("셔츠");
+		vo.setGroupNo(1L);
+		vo.setGroupSeq(3L);
+		vo.setDepth(2L);
+		list.add(2, vo);
+		
+		vo = new CategoryVo();
+		vo.setNo(11L);
+		vo.setName("하의");
+		vo.setGroupNo(1L);
+		vo.setGroupSeq(4L);
+		vo.setDepth(1L);
+		list.add(3, vo);
+		
+		vo = new CategoryVo();
+		vo.setNo(2L);
+		vo.setName("신발");
+		vo.setGroupNo(2L);
+		vo.setGroupSeq(1L);
+		vo.setDepth(0L);
+		list.add(4, vo);
+		
+		vo = new CategoryVo();
+		vo.setNo(4L);
+		vo.setName("스니커즈");
+		vo.setGroupNo(2L);
+		vo.setGroupSeq(2L);
+		vo.setDepth(1L);
+		list.add(5, vo);
+		
+		vo = new CategoryVo();
+		vo.setNo(8L);
+		vo.setName("가방");
+		vo.setGroupNo(3L);
+		vo.setGroupSeq(1L);
+		vo.setDepth(0L);
+		list.add(6, vo);
+			
+		mockMvc.perform(put("/api/admin/productManager/category")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(new Gson().toJson(list)))
+//				.andDo(print())
 				.andExpect(status().isOk());
 	}
 	
