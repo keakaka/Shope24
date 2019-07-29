@@ -151,6 +151,7 @@ public class AdminControllerTest {
 	@Test
 	public void updateCategory() throws Exception{
 		List<CategoryVo> list = new ArrayList<CategoryVo>();
+		
 		CategoryVo vo = new CategoryVo();
 		vo.setNo(1L);
 		vo.setName("의류");

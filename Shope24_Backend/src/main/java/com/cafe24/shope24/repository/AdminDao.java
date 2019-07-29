@@ -1,6 +1,7 @@
 package com.cafe24.shope24.repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,12 @@ public class AdminDao {
 		sqlSession.update("admin.groupSeqDown", vo);
 	}
 
-	public Boolean updateCategory(ArrayList<CategoryVo> list) {
+	public Boolean updateCategory(List<CategoryVo> list) {
+		
+		for(CategoryVo vo: list) {
+			System.out.println(vo);
+		}
+		
 		return sqlSession.update("admin.updateCategory", list) > 0;
 	}
 	

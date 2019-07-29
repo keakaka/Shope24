@@ -41,7 +41,7 @@
 	
 	<select id="getCategoryList" resultType="categoryvo">
 		<![CDATA[
-		  select no, name, groupNo, groupSeq, depth
+			select no, name, groupNo, groupSeq, depth
 			from category
 			order by groupNo asc, groupSeq asc		
 		]]>
@@ -49,23 +49,28 @@
 	
 	<delete id="deleteCategory" parameterType="categoryvo">
 		<![CDATA[
-		  delete from category where no = #{ no }
+			delete from category where no = #{ no }
 		]]>
 	</delete>
 	
 	<update id="groupSeqDown" parameterType="categoryvo">
 		<![CDATA[
-		  update category set
-		  	groupSeq = groupSeq - 1
-		  	where groupNo = #{ groupNo }
-		  	and groupSeq > #{ groupSeq }
+			update category set
+			groupSeq = groupSeq - 1
+			where groupNo = #{ groupNo }
+			and groupSeq > #{ groupSeq }
 		]]>
 	</update>
 	
 	<update id="updateCategory" parameterType="java.util.List">
-	    <foreach collection="list" item="vo" separator=" ; ">
-	        update category set groupSeq = "#{ vo.groupSeq }", depth = "#{ vo.depth }" where no = "#{ vo.no }"
-	    </foreach>
+		<choose>
+			<when test="list.size != 0">
+				<foreach collection="list" item="vo" separator=";">
+					<![CDATA[
+						update category set groupSeq = #{ vo.groupSeq }, depth = #{ vo.depth }, name = #{ vo.name } where no = #{ vo.no }
+					]]>
+				</foreach>
+			</when>
+		</choose>
 	</update>
-	
 </mapper>

@@ -68,10 +68,10 @@ public class AdminController {
 	
 	@ApiOperation(value="카테고리 수정")
 	@PutMapping("/productManager/category")
-	public JSONResult UpdateCategory( @RequestBody ArrayList<CategoryVo> list  ) {
+	public ResponseEntity<JSONResult> UpdateCategory( @RequestBody ArrayList<CategoryVo> list  ) {
 		Boolean check = adminService.updateCategory(list);
 		
-		return JSONResult.success(check?"수정 성공":"수정 실패");
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(check?"수정 성공":"수정 실패"));
 	}
 	
 	@ApiOperation(value="상품 조회")
