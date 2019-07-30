@@ -147,7 +147,7 @@ public class AdminControllerTest {
 				.andExpect(status().isOk());
 	}
 	
-//@Ignore
+@Ignore
 	@Test
 	public void updateCategory() throws Exception{
 		List<CategoryVo> list = new ArrayList<CategoryVo>();
@@ -224,9 +224,22 @@ public class AdminControllerTest {
 				.andExpect(status().isOk());
 	}
 	
+//@Ignore
+	@Test
+	public void insertProductForm() throws Exception{
+		mockMvc.perform(get("/api/admin/productManager/showInsertProductForm")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isOk());
+	}	
+
+
 @Ignore
 	@Test
 	public void insertProduct() throws Exception{
+		
+	
+	
 		mockMvc.perform(post("/api/admin/productManager/product")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())

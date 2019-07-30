@@ -44,9 +44,6 @@ public class AdminController {
 	@GetMapping("/productManager/category")
 	public ResponseEntity<JSONResult> showCategory() {
 		List<CategoryVo> list = adminService.getCategoryList();
-		for(CategoryVo vo : list) {
-			System.out.println(vo);
-		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
 	}
@@ -77,12 +74,23 @@ public class AdminController {
 	@ApiOperation(value="상품 조회")
 	@GetMapping("/productManager/product")
 	public JSONResult showProduct() {
+		
+		
 		return JSONResult.success(null);
+	}
+	
+	@ApiOperation(value="상품 등록 폼")
+	@GetMapping("/productManager/showInsertProductForm")
+	public ResponseEntity<JSONResult> showInsertProductForm() {
+		List<CategoryVo> list = adminService.getCategoryList();
+		
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
 	}
 	
 	@ApiOperation(value="상품 등록")
 	@PostMapping("/productManager/product")
 	public JSONResult insertProduct() {
+		
 		return JSONResult.success(null);
 	}
 	
