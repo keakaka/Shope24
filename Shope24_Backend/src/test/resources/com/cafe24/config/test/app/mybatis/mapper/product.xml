@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="product">
+
+	<select id="getDisplayProduct" parameterType="long" resultMap="displayProductDTO">
+		<![CDATA[
+		SELECT *
+		FROM displayproduct
+		WHERE no = #{no}
+		and status = 'Y'
+		]]>
+	</select>
+	
+	<select id="getProductList" parameterType="long" resultType="productvo">
+		<![CDATA[
+		SELECT *
+		FROM product
+		WHERE displayProductNo = #{no}
+		]]>
+	</select>
+	
+	<select id="getFileList" parameterType="long" resultType="filevo">
+		<![CDATA[
+		SELECT *
+		FROM productImage
+		WHERE displayProductNo = #{no}
+		]]>
+	</select>
+
+					<!-- result Map -->
+	<resultMap type="displayproductdto" id="displayProductDTO">
+		<id property="no" column="no"/>
+		<result property="categoryNo" column="categoryNo" />
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="date" column="date"/>
+		<result property="order" column="order"/>
+		
+		<collection property="productList" column="no" select="getProductList"></collection>
+		<collection property="fileList" column="no" select="getFileList"></collection>
+	</resultMap>
+
+
+	<insert id="insertCart" parameterType="cartvo">
+		<![CDATA[
+			insert into cart values
+			( null, #{ count }, #{ memberNo }, #{ productNo })
+		]]>
+	</insert>
+
+</mapper>

@@ -1,14 +1,18 @@
 package com.cafe24.shope24.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cafe24.shope24.dto.DisplayProductDTO;
 import com.cafe24.shope24.repository.AdminDao;
 import com.cafe24.shope24.vo.CategoryVo;
-
+import com.cafe24.shope24.vo.DisplayProductVo;
+import com.cafe24.shope24.vo.FileVo;
+import com.cafe24.shope24.vo.ProductVo;
 @Service
 @Transactional
 public class AdminService {
@@ -46,6 +50,27 @@ public class AdminService {
 	public Boolean updateCategory(ArrayList<CategoryVo> list) {
 		
 		return adminDao.updateCategory(list);
+	}
+
+	public Boolean insertProduct(DisplayProductDTO dto) {
+		
+		// 가장 먼저 선행 되야 할 DisplayProduct 를 이용하는 DTO에 Data를 담아 순차적 Insert 작업을 진행한다.
+		List<ProductVo> productList = dto.getProductList();
+		List<FileVo> fileList = dto.getFileList();
+		
+		Long displayProductNo = adminDao.insertDisplayProduct(dto);
+		for(FileVo vo : fileList) {
+			vo.setDisplayProductNo(displayProductNo);
+		}
+		adminDao.insertFile(fileList);
+		
+		for(ProductVo vo : productList) {
+			vo.setDisplayProductNo(displayProductNo);
+		}
+		
+		adminDao.insertProduct(productList);
+		
+		return true;
 	}
 	
 }

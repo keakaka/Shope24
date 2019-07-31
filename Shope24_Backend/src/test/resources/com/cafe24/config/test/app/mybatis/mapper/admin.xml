@@ -74,5 +74,43 @@
 		</choose>
 	</update>
 	
+	<insert id="insertDisplayProduct" parameterType="displayproductvo">
+		<![CDATA[
+			insert 
+		    into displayproduct 
+		    values(null, #{ categoryNo }, #{ title }, #{ content }, now(), default, default)	
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+				select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<insert id="insertFile" parameterType="java.util.List">
+		<choose>
+			<when test="list.size != 0">
+				insert into productImage values
+				<foreach collection="list" item="vo" separator=",">
+					<![CDATA[
+						( null, #{ vo.displayProductNo }, #{ vo.oriName }, #{ vo.oriName }, #{ vo.url }, #{ vo.status }, now() )
+					]]>
+				</foreach>
+			</when>
+		</choose>
+	</insert>
+	
+	<insert id="insertProduct" parameterType="java.util.List">
+		<choose>
+			<when test="list.size != 0">
+				insert into product values
+				<foreach collection="list" item="vo" separator=",">
+					<![CDATA[
+						( null, #{ vo.name }, #{ vo.stock }, #{ vo.activeStock }, #{ vo.price }, #{ vo.option }, default, #{ vo.displayProductNo } )
+					]]>
+				</foreach>
+			</when>
+		</choose>
+	</insert>
 	
 </mapper>

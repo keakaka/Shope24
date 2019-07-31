@@ -1,6 +1,7 @@
 package com.cafe24.shope24.controller.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cafe24.shope24.dto.DisplayProductDTO;
 import com.cafe24.shope24.dto.JSONResult;
 import com.cafe24.shope24.service.AdminService;
 import com.cafe24.shope24.vo.CategoryVo;
-import com.cafe24.shope24.vo.MemberVo;
-
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -89,9 +89,10 @@ public class AdminController {
 	
 	@ApiOperation(value="상품 등록")
 	@PostMapping("/productManager/product")
-	public JSONResult insertProduct() {
+	public JSONResult insertProduct( @RequestBody DisplayProductDTO dto ) {
+		Boolean check = adminService.insertProduct(dto);
 		
-		return JSONResult.success(null);
+		return JSONResult.success(check?"등록성공":"등록실패");
 	}
 	
 	@ApiOperation(value="상품 수정")

@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -23,13 +25,22 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.cafe24.shope24.config.app.test.AppConfig;
 import com.cafe24.shope24.config.web.test.WebConfig;
+import com.cafe24.shope24.dto.DisplayProductDTO;
+import com.cafe24.shope24.dto.JSONResult;
 import com.cafe24.shope24.service.AdminService;
 import com.cafe24.shope24.vo.CategoryVo;
+import com.cafe24.shope24.vo.DisplayProductVo;
+import com.cafe24.shope24.vo.FileVo;
+import com.cafe24.shope24.vo.ProductVo;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -56,6 +67,8 @@ public class AdminControllerTest {
 			build();
 	}
 	
+	
+	
 //	public void insertDefaultCategory() {
 //		
 //		CategoryVo vo = new CategoryVo();
@@ -64,10 +77,9 @@ public class AdminControllerTest {
 //		
 //		CategoryVo vo2 = new CategoryVo();
 //		vo2.setName("청바지");
-//		vo2.setRefNo(1L);
 //		sqlSession.insert("admin.insertCategory", vo);
 //	}
-	
+//	
 //	@After
 //	public void teadDown() {
 //		sqlSession.delete("test.deleteAllCategory");
@@ -224,7 +236,7 @@ public class AdminControllerTest {
 				.andExpect(status().isOk());
 	}
 	
-//@Ignore
+@Ignore
 	@Test
 	public void insertProductForm() throws Exception{
 		mockMvc.perform(get("/api/admin/productManager/showInsertProductForm")
@@ -234,17 +246,90 @@ public class AdminControllerTest {
 	}	
 
 
-@Ignore
+//@Ignore
 	@Test
 	public void insertProduct() throws Exception{
 		
-	
-	
-		mockMvc.perform(post("/api/admin/productManager/product")
+		ResultActions resultActions =
+		
+		mockMvc.perform(get("/api/admin/productManager/category")
 				.contentType(MediaType.APPLICATION_JSON))
-				.andDo(print())
+//				.andDo(print())
 				.andExpect(status().isOk());
-	}	
+		
+		String resultString = resultActions.andReturn().getResponse().getContentAsString();
+		JSONResult jsonResult = new Gson().fromJson(resultString, JSONResult.class);
+		List<CategoryVo> list = new Gson().fromJson(jsonResult.getData().toString(), new TypeToken<List<CategoryVo>>(){}.getType());
+		
+		DisplayProductDTO dto = new DisplayProductDTO();
+		
+		dto.setTitle("판매글 제목");
+		dto.setContent("판매글 내용");
+		dto.setCategoryNo(3L);
+		
+		List<ProductVo> productList = new ArrayList<ProductVo>();
+		ProductVo pv = new ProductVo();
+		pv.setName("뉴발란스 맨투맨");
+		pv.setOption("S/BLACK");
+		pv.setPrice(50000L);
+		pv.setStock(600L);
+		pv.setActiveStock(600L);
+		productList.add(pv);
+		
+		pv = new ProductVo();
+		pv.setName("뉴발란스 맨투맨");
+		pv.setOption("M/BLACK");
+		pv.setPrice(50000L);
+		pv.setStock(600L);
+		pv.setActiveStock(600L);
+		productList.add(pv);
+		
+		pv = new ProductVo();
+		pv.setName("뉴발란스 맨투맨");
+		pv.setOption("L/BLACK");
+		pv.setPrice(50000L);
+		pv.setStock(600L);
+		pv.setActiveStock(600L);
+		productList.add(pv);
+		
+		pv = new ProductVo();
+		pv.setName("뉴발란스 맨투맨");
+		pv.setOption("XL/BLACK");
+		pv.setPrice(50000L);
+		pv.setStock(600L);
+		pv.setActiveStock(600L);
+		productList.add(pv);
+		
+		
+		List<FileVo> fileList = new ArrayList<FileVo>();
+		FileVo fv = new FileVo();
+		fv.setOriName("맨투맨메인사진.JPG");
+		fv.setChangeName("맨투맨 바뀐 이름.JPG");
+		fv.setDisplayProductNo(1L);
+		fv.setUrl("/assets/images/productImages");
+		fv.setStatus("Main");
+		fileList.add(fv);
+		
+		fv = new FileVo();
+		fv.setOriName("맨투맨 서브 사진");
+		fv.setChangeName("맨투맨 바뀐 이름.JPG");
+		fv.setDisplayProductNo(1L);
+		fv.setUrl("/assets/images/productImages");
+		fv.setStatus("Sub");
+		fileList.add(fv);
+		
+		dto.setProductList(productList);
+		dto.setFileList(fileList);
+		
+		
+		mockMvc.perform(post("/api/admin/productManager/product")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(new Gson().toJson(dto)))
+//				.andDo(print())
+				.andExpect(status().isOk());
+		
+		
+	}
 	
 @Ignore
 	@Test

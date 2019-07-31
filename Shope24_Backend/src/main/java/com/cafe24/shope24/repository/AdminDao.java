@@ -7,7 +7,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.cafe24.shope24.dto.DisplayProductDTO;
 import com.cafe24.shope24.vo.CategoryVo;
+import com.cafe24.shope24.vo.DisplayProductVo;
+import com.cafe24.shope24.vo.FileVo;
+import com.cafe24.shope24.vo.ProductVo;
 
 @Repository
 public class AdminDao {
@@ -46,11 +50,23 @@ public class AdminDao {
 
 	public Boolean updateCategory(List<CategoryVo> list) {
 		
-		for(CategoryVo vo: list) {
-			System.out.println(vo);
-		}
-		
 		return sqlSession.update("admin.updateCategory", list) > 0;
+	}
+
+	public Long insertDisplayProduct(DisplayProductDTO dto) {
+		
+		sqlSession.insert("admin.insertDisplayProduct", dto);
+		
+		return dto.getNo();
+	}
+
+	public int insertFile(List<FileVo> fileList) {
+		
+		return sqlSession.insert("admin.insertFile", fileList);
+	}
+
+	public int insertProduct(List<ProductVo> productList) {
+		return sqlSession.insert("admin.insertProduct", productList);
 	}
 	
 	
