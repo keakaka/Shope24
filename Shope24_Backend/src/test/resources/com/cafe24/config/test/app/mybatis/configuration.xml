@@ -9,6 +9,7 @@
 		<typeAlias alias="productvo" type="com.cafe24.shope24.vo.ProductVo" />
 		<typeAlias alias="displayproductdto" type="com.cafe24.shope24.dto.DisplayProductDTO" />
 		<typeAlias alias="cartvo" type="com.cafe24.shope24.vo.CartVo" />
+		<typeAlias alias="ordersdto" type="com.cafe24.shope24.dto.OrdersDTO" />
     </typeAliases>	
 	<mappers>
 		<mapper resource="com/cafe24/config/test/app/mybatis/mapper/member.xml" />

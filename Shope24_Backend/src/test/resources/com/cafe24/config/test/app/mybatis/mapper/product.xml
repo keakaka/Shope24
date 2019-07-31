@@ -48,4 +48,36 @@
 		]]>
 	</insert>
 
+	<select id="getTodayOrderCount" resultType="int">
+		select count(*) 
+		from orders 
+		where date_format(date, '%Y%m%d') = date_format(now(), '%Y%m%d');
+	</select>
+
+	<insert id="insertOrders" parameterType="ordersdto">
+		<![CDATA[
+			insert 
+		    into orders 
+		    values(null, #{ memberNo }, #{ ordersCode }, #{ ordersName }, #{ receiveName }, #{ email }, #{ deliveryAddress }, #{ tel }, #{ phone }, #{ price }, now(), default)	
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+				select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<insert id="insertOrdersDetail" parameterType="ordersdto">
+		<choose>
+			<when test="list.size != 0">
+				insert into ordersdetail values
+				<foreach collection="list" item="vo" separator=",">
+					<![CDATA[
+						( null, #{ vo.productNo }, #{ vo.ordersNo }, #{ vo.count } )
+					]]>
+				</foreach>
+			</when>
+		</choose>
+	</insert>
+
 </mapper>

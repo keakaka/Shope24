@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -27,9 +28,11 @@ import com.cafe24.shope24.config.app.test.AppConfig;
 import com.cafe24.shope24.config.web.test.WebConfig;
 import com.cafe24.shope24.dto.DisplayProductDTO;
 import com.cafe24.shope24.dto.JSONResult;
+import com.cafe24.shope24.dto.OrdersDTO;
 import com.cafe24.shope24.vo.CartVo;
 import com.cafe24.shope24.vo.CategoryVo;
 import com.cafe24.shope24.vo.DisplayProductVo;
+import com.cafe24.shope24.vo.OrdersDetailVo;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
@@ -91,19 +94,44 @@ public class ProductControllerTest {
 		
 	}
 
-@Ignore
+//@Ignore
 	@Test
-	public void BuyProduct() throws Exception {
+	public void buyProduct() throws Exception {
 		
-		CartVo vo = new CartVo();
-		vo.setMemberNo("1");
-		vo.setProductNo(3L);
-		vo.setCount(2L);
+		OrdersDTO dto = new OrdersDTO();
 		
-		mockMvc.perform(post("/api/product/addCart")
+		dto.setMemberNo(1L);
+		dto.setOrdersName("주문자");
+		dto.setReceiveName("수령자");
+		dto.setPhone("010-6257-0512");
+		dto.setDeliveryAddress("서울시 관악구 신림동");
+		dto.setPrice(120000L);
+		dto.setTel("02-2525-2525");
+		dto.setEmail("keakaka@naver.com");
+		
+		List<OrdersDetailVo> ordersDetailList = new ArrayList<OrdersDetailVo>();
+		OrdersDetailVo ordersDetailVo = new OrdersDetailVo();
+		
+		ordersDetailVo.setProductNo(3L);
+		ordersDetailVo.setCount(1L);
+		ordersDetailList.add(ordersDetailVo);
+		
+		ordersDetailVo = new OrdersDetailVo();
+		ordersDetailVo.setProductNo(2L);
+		ordersDetailVo.setCount(1L);
+		ordersDetailList.add(ordersDetailVo);
+		
+		ordersDetailVo = new OrdersDetailVo();
+		ordersDetailVo.setProductNo(4L);
+		ordersDetailVo.setCount(4L);
+		ordersDetailList.add(ordersDetailVo);
+		
+		dto.setOrdersDetailList(ordersDetailList);
+		
+		mockMvc.perform(post("/api/product")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(new Gson().toJson(vo)))
-				.andDo(print())
+				.content(new Gson().toJson(dto)))
+//				.andDo(print())
 				.andExpect(status().isOk());
 		
 	}

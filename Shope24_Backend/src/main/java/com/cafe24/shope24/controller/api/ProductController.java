@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cafe24.shope24.dto.DisplayProductDTO;
 import com.cafe24.shope24.dto.JSONResult;
+import com.cafe24.shope24.dto.OrdersDTO;
 import com.cafe24.shope24.service.ProductService;
 import com.cafe24.shope24.vo.CartVo;
 
@@ -48,7 +49,16 @@ public class ProductController {
 		
 		Boolean check = productService.insertCart(vo);
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(check?"장바구니 담기 성공":"장바구니 담기 실패"));
+	}
+	
+	@ApiOperation(value="상품 구매")
+	@PostMapping("")
+	public ResponseEntity<JSONResult> buyProduct( @RequestBody OrdersDTO dto) {
+		
+		Boolean check = productService.insertOrders(dto);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(check?"성공":"실패"));
 	}
 	
 }
