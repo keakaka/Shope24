@@ -7,6 +7,7 @@ public class CategoryVo {
 	private Long groupNo;
 	private Long groupSeq;
 	private Long depth;
+	private String status;
 	
 	public Long getNo() {
 		return no;
@@ -38,10 +39,16 @@ public class CategoryVo {
 	public void setDepth(Long depth) {
 		this.depth = depth;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	@Override
 	public String toString() {
 		return "CategoryVo [no=" + no + ", name=" + name + ", groupNo=" + groupNo + ", groupSeq=" + groupSeq
-				+ ", depth=" + depth + "]";
+				+ ", depth=" + depth + ", status=" + status + "]";
 	}
 	
 }

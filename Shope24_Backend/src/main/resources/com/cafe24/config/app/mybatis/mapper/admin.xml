@@ -13,8 +13,7 @@
 						 ( select ifnull( max( groupNo ), 0 ) + 1
 						     from category c ),
 						 1, 
-						 0,
-						 default)
+						 0)
 				]]>
 			</when>
 			<otherwise>
@@ -25,8 +24,7 @@
 						 #{name },
 						 #{groupNo },
 						 #{groupSeq }+1, 
-						 #{depth }+1,
-						 default)				
+						 #{depth }+1)				
 				]]>
 			</otherwise>
 		</choose>
@@ -38,7 +36,6 @@
 			   set groupSeq = groupSeq + 1
 			 where groupNo = #{groupNo }
 			   and groupSeq > #{groupSeq }
-			   and status = 'Y'
 		]]>	
 	</update>	
 	
@@ -46,16 +43,13 @@
 		<![CDATA[
 			select no, name, groupNo, groupSeq, depth
 			from category
-			where status = 'Y'
 			order by groupNo asc, groupSeq asc		
 		]]>
 	</select>
 	
 	<delete id="deleteCategory" parameterType="categoryvo">
 		<![CDATA[
-			update category set
-			status = 'N'
-			where no = #{ no }
+			delete from category where no = #{ no }
 		]]>
 	</delete>
 	
@@ -65,7 +59,6 @@
 			groupSeq = groupSeq - 1
 			where groupNo = #{ groupNo }
 			and groupSeq > #{ groupSeq }
-			and status = 'Y'
 		]]>
 	</update>
 	

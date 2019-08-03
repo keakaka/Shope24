@@ -1,65 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="member">
-	<select id="checkId" resultType="string" parameterType="string">
+	<select id="checkId" resultType="string" parameterType="membervo">
 		<![CDATA[	 
-		select id
-		  from member 
-		 where id = #{value }
+			select id
+			from member 
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )
 		]]>
 	</select>
-	<!-- <insert id="insert" parameterType="uservo">
-		<![CDATA[
-			insert 
-		      into user 
-		    values(null, #{name }, #{email }, #{password }, #{gender }, now())	
+	<insert id="insertMember" parameterType="membervo">
+		<![CDATA[	 
+			insert into member values( null, 
+				hex( aes_encrypt( #{ id }, #{ key } ) ), SHA2(#{ password }, 512), hex( aes_encrypt( #{ name }, #{ key } ) ), hex( aes_encrypt( #{ email }, #{ key } ) ),
+				hex( aes_encrypt( #{ birth }, #{ key } ) ), #{ gender }, hex( aes_encrypt( #{ phone }, #{ key } ) ), current_timestamp(), default, 'Y'
+			)
 		]]>
-		<selectKey keyProperty="no" resultType="long" order="AFTER">
-			<![CDATA[
-			select last_insert_id()
-			]]>
-		</selectKey>
 	</insert>
-
-	<select id="getByNo" resultType="uservo" parameterType='long'>
-		<![CDATA[	 
-		select no, name, email, gender
-		  from user 
-		 where no = #{value }
-		]]>
-	</select>
-
-	<select id="getByEmail" resultType="uservo" parameterType='string'>
-		<![CDATA[	 
-		select no, name, email, gender
-		  from user 
-		 where email = #{value }
-		]]>
-	</select>
 	
-	<select id="getByEmailAndPassword" resultType="uservo" parameterType='map'>
+	<select id="login" resultType="membervo" parameterType="membervo">
 		<![CDATA[	 
-		select no, name
-		  from user 
-		 where email=#{email } 
-		   and password=#{password }
+			select no, aes_decrypt(unhex(id), #{ key }) id, convert(aes_decrypt(unhex(name), #{ key }) using utf8) name,     
+			aes_decrypt(unhex(email), #{ key }) email, aes_decrypt(unhex(birth), #{ key }) birth,     
+			gender, aes_decrypt(unhex(phone), #{ key }) phone, joinDate
+			from member     
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )      
+			and password = SHA2( #{ password }, 512 )      
+			and status = 'Y';
 		]]>
 	</select>
-	
-	<update id="update" parameterType="uservo">
-		<![CDATA[
-		update user
-		   set name = #{name },
-		]]>
-		<if test="password != ''">
-			<![CDATA[
-			password=#{password },
-			]]>
-		</if>		   
-		<![CDATA[
-		       gender = #{gender }
-		       
-		 where no = #{no }      	 
-		]]>
-	</update> -->
 </mapper>

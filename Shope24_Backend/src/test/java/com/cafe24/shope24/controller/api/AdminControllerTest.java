@@ -120,7 +120,7 @@ public class AdminControllerTest {
 				.andExpect(status().isOk());
 	}
 	
-@Ignore
+//@Ignore
 	@Test
 	public void insertCategory() throws Exception{
 //		insertDefaultCategory();
@@ -132,10 +132,10 @@ public class AdminControllerTest {
 //				.andExpect(status().isOk());
 		
 		CategoryVo vo2 = new CategoryVo();
-		vo2.setName("하의");
+		vo2.setName("맨투맨");
 		vo2.setGroupNo(1L);
-		vo2.setGroupSeq(1L);
-		vo2.setDepth(0L);
+		vo2.setGroupSeq(2L);
+		vo2.setDepth(1L);
 		
 		mockMvc.perform(post("/api/admin/productManager/category")
 				.contentType(MediaType.APPLICATION_JSON).content(new Gson().toJson(vo2)))
@@ -149,7 +149,7 @@ public class AdminControllerTest {
 	public void deleteCategory() throws Exception{
 	
 		CategoryVo vo = new CategoryVo();
-		vo.setNo(5L);
+		vo.setNo(12L);
 		vo.setGroupNo(1L);
 		vo.setGroupSeq(4L);
 		mockMvc.perform(delete("/api/admin/productManager/category")
@@ -246,7 +246,7 @@ public class AdminControllerTest {
 	}	
 
 
-//@Ignore
+@Ignore
 	@Test
 	public void insertProduct() throws Exception{
 		
@@ -334,6 +334,10 @@ public class AdminControllerTest {
 @Ignore
 	@Test
 	public void updateProduct() throws Exception{
+	
+		DisplayProductDTO dto = new DisplayProductDTO();
+		
+	
 		mockMvc.perform(put("/api/admin/productManager/product")
 				.contentType(MediaType.APPLICATION_JSON))
 				.andDo(print())
