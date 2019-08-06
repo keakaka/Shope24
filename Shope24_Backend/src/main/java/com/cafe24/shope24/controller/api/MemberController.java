@@ -39,18 +39,13 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	@ApiOperation(value="회원가입 폼 요청 URL")
-	@GetMapping("/join")
-	public ResponseEntity<JSONResult> joinform() {
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
-	}
-	
 	@ApiOperation(value="아이디 중복체크")
 	@GetMapping("/checkId")
-	public ResponseEntity<JSONResult> checkId(@RequestParam(value="id") String id) {
+	public ResponseEntity<Boolean> checkId(@RequestParam(value="id") String id) {
 		Boolean checkId = memberService.checkId(id);
+		System.out.println("오니");
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(checkId?"가입가능":"중복된 아이디"));
+		return ResponseEntity.status(HttpStatus.OK).body(checkId);
 	}
 	
 	@ApiOperation(value="회원가입")
