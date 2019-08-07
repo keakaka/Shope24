@@ -31,19 +31,19 @@
 <form>
 <h1>로 그 인</h1>
 <div>
-<input type="text" class="form-control" placeholder="ID" required="" />
+<input type="text" class="form-control" placeholder="ID"/>
 </div>
 <div>
-<input type="password" class="form-control" placeholder="Password" required="" />
+<input type="password" class="form-control" placeholder="Password"/>
 </div>
 <div>
-<a class="btn btn-default submit" href="index.html">로그인</a>
+<button id="login" class="btn btn-default">로그인</button>
 <a class="reset_pass" href="#">비밀번호를 잃어버리셨습니까?</a>
 </div>
 <div class="clearfix"></div>
 <div class="separator">
 <p class="change_link">처음 방문하세요 ?
-<a href="#signup" class="to_register"> 회원가입 화면으로 </a>
+<a href="#signup" class="to_register"> 회원가입 하러 가기 </a>
 </p>
 <div class="clearfix"></div>
 <br />
@@ -57,32 +57,73 @@
 </div>
 <div id="register" class="animate form registration_form">
 <section class="login_content">
-<form>
+<form method="post" action="/user/join" id="joinform">
 <h1>계정 만들기</h1>
 <div>
-<input type="text" class="form-control" placeholder="Id" id="id" required="" /><button id="checkId" class="btn btn-dark"> ID 중복체크 </button>
+<label for="id">아이디</label>
+<input type="text" class="form-control" placeholder="6자 이상 영문/숫자 " id="id" name="id"/>
+</div>
+<!-- <button id="checkId" class="btn btn-dark btn-xs"> ID 중복체크 </button> -->
+<div>
+<label for="password">비밀번호</label>
+<input type="password" class="form-control" placeholder="8자 이상 문자/숫자/특수 문자" id="password" name="password"/>
 </div>
 <div>
-<input type="email" class="form-control" placeholder="Email" required="" />
+<label for="name">이름</label>
+<input type="text" class="form-control" placeholder="이름" id="name" name="name"/>
 </div>
 <div>
-<input type="password" class="form-control" placeholder="Password" required="" />
+<label for="email">이메일</label>
+<input type="email" class="form-control" id="email" placeholder="이메일" name="email" />
+</div>
+<div>
+<label for="phone">연락처</label>
+<input type="text" class="form-control" id="phone" placeholder="연락처" name="phone" />
+</div>
+<div>
+<label for="date">생년월일</label>
+<input type="date" class="form-control" id="birth" placeholder="생년월일" name="birth" />
+</div>
+<div>
+<br><br>
+<label for="Male">
+<input type="radio" value="M" id="Male" name="gender"/>
+	MAN
+</label>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label for="Female">
+<input type="radio" value="F" id="Female" name="gender"/>
+	WOMAN
+</label>
 </div>
 	
 <div>
-<a class="btn btn-default submit" href="/user/join">회원가입</a>
+<a id="join" class="btn btn-dark">회원가입</a>
+<a id="cancel" class="btn btn-dark" href="/">취소</a>
 </div>
 <div class="clearfix"></div>
 
 <script>
 	$(function(){
-		$('#checkId').click(function(){
+		$('#join').click(function(){
 			var id = $('#id').val();
+			var password = $('#password').val();
+			var name = $('#name').val();
+			var email = $('#email').val();
+			var phone = $('#phone').val();
+			var birth = $('#birth').val();
+			var gender = $('input[name="gender"]:checked').val();
 			$.ajax({
-				url: "/user/checkId",
-				type: "GET",
-				data: { id:id },
+				url: "/user/join",
+				type: "POST",
+				data: { id:id, password:password, name:name, email:email, phone:phone, birth:birth, gender:gender },
+				dataType: "json",
 				success: function(result){
+					if(result == 'success'){
+						location.href='/';
+					}else{
+						alert(result);
+					}
 					
 				},
 				error: function(xhr, error){
@@ -91,12 +132,14 @@
 			});
 		});
 	});
+	
 </script>
 
 <div class="separator">
 <p class="change_link">이미 가입하셨나요 ?
 <a href="#signin" class="to_register"> 로그인 화면으로 </a>
 </p>
+
 <div class="clearfix"></div>
 <br />
 <div>

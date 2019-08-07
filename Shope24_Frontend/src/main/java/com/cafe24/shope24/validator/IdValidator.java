@@ -5,13 +5,15 @@ import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.cafe24.shope24.validator.constraints.ValidPassword;
+import com.cafe24.shope24.validator.constraints.ValidId;
 
-public class PasswordValidator implements ConstraintValidator<ValidPassword, String> {
-private Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()])[A-Za-z\\d~!@#$%^&*()]{8,}$");
+public class IdValidator implements ConstraintValidator<ValidId, String> {
 
+	private Pattern pattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9]{5,}$");
+	
 	@Override
-	public void initialize(ValidPassword constraintAnnotation) {
+	public void initialize(ValidId constraintAnnotation) {
+		
 	}
 	
 	@Override
@@ -21,4 +23,6 @@ private Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^
 		}
 		return pattern.matcher( value ).matches();
 	}
+
+
 }

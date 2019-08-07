@@ -1,17 +1,20 @@
 package com.cafe24.shope24.validator;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.cafe24.shope24.validator.constraints.ValidPassword;
+import com.cafe24.shope24.validator.constraints.ValidGender;
 
-public class PasswordValidator implements ConstraintValidator<ValidPassword, String> {
-private Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()])[A-Za-z\\d~!@#$%^&*()]{8,}$");
+public class GenderValidator implements ConstraintValidator<ValidGender, String> {
 
+	private Pattern pattern = Pattern.compile("M|F|N");
+	
 	@Override
-	public void initialize(ValidPassword constraintAnnotation) {
+	public void initialize(ValidGender constraintAnnotation) {
+		
 	}
 	
 	@Override
@@ -21,4 +24,6 @@ private Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^
 		}
 		return pattern.matcher( value ).matches();
 	}
+
+
 }

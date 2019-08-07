@@ -10,6 +10,7 @@ import com.cafe24.shope24.validator.constraints.ValidPassword;
 public class PasswordValidator implements ConstraintValidator<ValidPassword, String> {
 private Pattern pattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*()])[A-Za-z\\d~!@#$%^&*()]{8,}$");
 
+
 	@Override
 	public void initialize(ValidPassword constraintAnnotation) {
 	}

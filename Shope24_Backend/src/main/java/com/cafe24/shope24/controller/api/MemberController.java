@@ -43,7 +43,6 @@ public class MemberController {
 	@GetMapping("/checkId")
 	public ResponseEntity<Boolean> checkId(@RequestParam(value="id") String id) {
 		Boolean checkId = memberService.checkId(id);
-		System.out.println("오니");
 		
 		return ResponseEntity.status(HttpStatus.OK).body(checkId);
 	}
@@ -52,6 +51,8 @@ public class MemberController {
 	@PostMapping("/join")
 	public ResponseEntity<JSONResult> join(@RequestBody MemberVo memberVo, BindingResult result) {
 		
+		System.out.println("오니");
+		System.out.println("vo = " + memberVo);
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		
 		Set<ConstraintViolation<MemberVo>> validatorResults = validator.validateProperty(memberVo, "password");
@@ -71,13 +72,13 @@ public class MemberController {
 				}
 				
 				JSONResult jsonResult = JSONResult.fail(message);
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(jsonResult);
+				return ResponseEntity.status(HttpStatus.OK).body(jsonResult);
 				
 			}
 		}
 		Boolean check = memberService.insertMember(memberVo);
 		
-		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(check?"가입성공":"가입실패"));
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(check));
 	}
 	
 	@ApiOperation(value="로그인")
