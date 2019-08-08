@@ -33,5 +33,10 @@ public class MemberService {
 		}
 		
 	}
+
+	public MemberVo getMember(String username) {
+		
+		return null;
+	}
 	
 }
