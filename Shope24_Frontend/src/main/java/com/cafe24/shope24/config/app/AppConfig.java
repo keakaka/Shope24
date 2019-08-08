@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan({"com.cafe24.shope24.repository", "com.cafe24.shope24.service", "com.cafe24.shope24.aspect"})
-@Import({AppSecurityConfig.class})
+//@Import({AppSecurityConfig.class})
 public class AppConfig {
 	
 }

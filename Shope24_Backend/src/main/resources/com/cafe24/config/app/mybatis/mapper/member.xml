@@ -19,13 +19,25 @@
 	
 	<select id="login" resultType="membervo" parameterType="membervo">
 		<![CDATA[	 
-			select no, aes_decrypt(unhex(id), #{ key }) id, convert(aes_decrypt(unhex(name), #{ key }) using utf8) name,     
-			aes_decrypt(unhex(email), #{ key }) email, aes_decrypt(unhex(birth), #{ key }) birth,     
-			gender, aes_decrypt(unhex(phone), #{ key }) phone, joinDate
-			from member     
-			where id = hex( aes_encrypt( #{ id }, #{ key } ) )      
-			and password = SHA2( #{ password }, 512 )      
+			select no, aes_decrypt(unhex(id), #{ key }) id, convert(aes_decrypt(unhex(name), #{ key }) using utf8) name,
+			aes_decrypt(unhex(email), #{ key }) email, aes_decrypt(unhex(birth), #{ key }) birth,
+			gender, aes_decrypt(unhex(phone), #{ key }) phone, joinDate, role
+			from member
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )
+			and password = SHA2( #{ password }, 512 )
 			and status = 'Y';
 		]]>
 	</select>
+	
+	<select id="getAdmin" resultType="membervo" parameterType="membervo">
+		<![CDATA[	 
+			select aes_decrypt(unhex(id), #{ key }) id, role
+			from member
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )
+			and password = SHA2( #{ password }, 512 )
+			and status = 'Y'
+			and role = 'ROLE_ADMIN';
+		]]>
+	</select>
+	
 </mapper>

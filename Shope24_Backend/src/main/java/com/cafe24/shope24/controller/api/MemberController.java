@@ -51,8 +51,6 @@ public class MemberController {
 	@PostMapping("/join")
 	public ResponseEntity<JSONResult> join(@RequestBody MemberVo memberVo, BindingResult result) {
 		
-		System.out.println("오니");
-		System.out.println("vo = " + memberVo);
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		
 		Set<ConstraintViolation<MemberVo>> validatorResults = validator.validateProperty(memberVo, "password");
@@ -84,7 +82,6 @@ public class MemberController {
 	@ApiOperation(value="로그인")
 	@PostMapping("/login")
 	public ResponseEntity<JSONResult> login(@RequestBody MemberVo memberVo, BindingResult result) {
-		
 		Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 		
 		Set<ConstraintViolation<MemberVo>> validatorResults = validator.validateProperty(memberVo, "password");

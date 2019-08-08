@@ -3,10 +3,17 @@ package com.cafe24.shope24.controller.api;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +25,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cafe24.shope24.dto.DisplayProductDTO;
 import com.cafe24.shope24.dto.JSONResult;
 import com.cafe24.shope24.service.AdminService;
+import com.cafe24.shope24.service.MemberService;
 import com.cafe24.shope24.vo.CategoryVo;
+import com.cafe24.shope24.vo.MemberVo;
+
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -27,11 +37,23 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService adminService;
+	@Autowired
+	private MemberService memberService;
 	
 	@ApiOperation(value="어드민 메인페이지")
 	@GetMapping()
 	public ResponseEntity<JSONResult> adminMain() {
 		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(null));
+	}
+	
+	@ApiOperation(value="로그인")
+	@PostMapping("/login")
+	public ResponseEntity<JSONResult> login(@RequestBody MemberVo memberVo, BindingResult result) {
+		
+		MemberVo vo = memberService.getAdmin(memberVo);
+		System.out.println(vo);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(vo));
+		
 	}
 	
 	@ApiOperation(value="상품관리")

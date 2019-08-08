@@ -55,4 +55,8 @@ public class MemberService {
 		return true;
 	}
 
+	public MemberVo getAdmin(MemberVo memberVo) {
+		return memberDao.getAdmin(memberVo);
+	}
+
 }

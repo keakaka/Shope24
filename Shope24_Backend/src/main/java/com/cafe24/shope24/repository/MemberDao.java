@@ -31,5 +31,12 @@ public class MemberDao {
 		return sqlSession.selectOne("member.login", memberVo);
 	}
 
+	public MemberVo getAdmin(MemberVo memberVo) {
+		
+		memberVo.setKey(key);
+		
+		return sqlSession.selectOne("member.getAdmin", memberVo);
+	}
+
 }
  

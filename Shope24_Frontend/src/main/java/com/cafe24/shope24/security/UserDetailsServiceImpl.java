@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl  implements UserDetailsService{
 		if( userVo != null ) {
 			securityUser.setNo(userVo.getNo());
 			securityUser.setName(userVo.getName());			// Service data || Biz Data
-			securityUser.setUsername(userVo.getEmail());	// Principal
+			securityUser.setUsername(userVo.getId());	// Principal
 			securityUser.setPassword(userVo.getPassword()); // Credential
 			securityUser.setAuthorities(Arrays.asList(new SimpleGrantedAuthority(userVo.getRole())));// => Role을 이용해 Authority를 만드는 방법.
 		}

@@ -96,8 +96,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 		.anyRequest().permitAll();
 			
 		//  Temporary for Testing - CSRF 설정 (테스트를 위해 CSRF Disable)
-		http
-		.csrf().disable();
+//		http
+//		.csrf().disable();
 		
 		//
 		//	2. 로그인 설정

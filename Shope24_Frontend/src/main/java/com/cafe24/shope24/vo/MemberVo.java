@@ -14,29 +14,23 @@ public class MemberVo {
 	
 	private Long no;
 	
-	@ValidId
 	private String id;
 	
-	@ValidPassword
 	private String password;
 	
-	@Length
 	private String name;
 	
-	@Email
 	private String email;
 	
 	private String status;
 	private String phone;
 	
-	@ValidGender
 	private String gender;
 	private String birth;
 	private String role;
 	
 	private String key;
 	
-	@Override
 	public String toString() {
 		return "MemberVo [no=" + no + ", id=" + id + ", password=" + password + ", name=" + name + ", email=" + email
 				+ ", status=" + status + ", phone=" + phone + ", gender=" + gender + ", birth=" + birth + ", role="
