@@ -47,14 +47,12 @@ public class MemberService {
 		ResponseEntity<JSONResult> result = 
 				restTemplate.postForEntity("http://localhost:8080/Shope24_Backend/api/admin/login", memberVo, JSONResult.class);
 		MemberVo vo = null;
-		System.out.println("겟데이터"+result.getBody().getData());
 		if("success".equals(String.valueOf(result.getBody().getResult()))) {
-//			JSONResult jsonResult = new Gson().fromJson(result.getBody().getData().toString(), JSONResult.class);
 			vo = new Gson().fromJson(result.getBody().getData().toString(), MemberVo.class);
 			return vo;
 		}else {
 			return vo;
 		}
 	}
-	
+
 }
