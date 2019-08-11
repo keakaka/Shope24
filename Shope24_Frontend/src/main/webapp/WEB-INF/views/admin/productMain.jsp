@@ -98,14 +98,84 @@
 									<div class="clearfix"></div>
 								</div>
 								<div class="x_content">
-
+									<form id="FILE_FORM" method="post" enctype="multipart/form-data" action="">
+									<h2 style="font-weight:bold;"> 썸네일 이미지 등록 </h2>
+										<label> 첫 번째 이미지가 메인 이미지로 등록 됩니다. </label> <br>
+										<input type="file" id="imgBtn" name="imgBtn" class="imgBtn btn btn-default" />
+							        </form>
+									
+									<br><br>
+									<div class="row imgArea">
+									
+									</div>
+									
+									<script>
+									
+									$(function(){  
+										
+						                $('#imgBtn').change(function(){
+						                	if($('#imgBtn').get(0).files.length != 0){
+						                		var form = $('#FILE_FORM')[0];
+												var form_data = new FormData(form);
+												var file = $(this)[0].files[0];
+												form_data.append('file', file);
+												
+												var ext = file.name.split(".").pop().toLowerCase();
+												if(ext.length > 0){
+													if($.inArray(ext, ["gif","png","jpg","jpeg"]) == -1) { 
+														alert("gif,png,jpg 파일만 업로드 할수 있습니다.");
+														$(this).val("");
+														return false;
+													}                  
+												}
+												
+												$.ajax({
+							                        url: "/admin/imgUpload",
+							                        type: "post",
+							                        data: form_data,
+							                        dataType: 'json',
+							                        enctype: 'multipart/form-data',
+							                        contentType: false,
+							                        crossDomain: true,
+							                        processData: false,
+							                        success: function(result) {
+							                        	var obj = JSON.parse(result);
+							                        	
+							                            $area = $('.imgArea');
+							                            $div = $('<div class="col-lg-3 col-md-3 mb-3">')
+							                            $img = $('<img class="col-lg-12 col-md-12 mb-12" name="'+obj.fileName+'" alt="이미지" src="${pageContext.servletContext.contextPath }' + obj.url + '" />');
+							                            $btn = $('<button class="delBtn btn btn-danger btn-xs" style="margin-left:40%;">X</button>');
+							                            $input = $('<input type="hidden" value="' + obj.changeName + '" />');
+							                            
+							                            $div.append($img);
+							                            $div.append($btn);
+							                            $div.append($input);
+							                            
+							                            $area.append($div);
+							                            
+							                            $(function(){
+							                            	$('.delBtn').click(function(){
+							                            		console.log($(this).parent());
+							                            	});
+							                            });
+							                            
+							                        },
+													error : function(error){
+														
+													}
+												});
+						                	}
+						                });
+									});    
+									
+									</script>
 									<!-- start form for validation -->
-									<form id="productForm" data-parsley-validate action="/admin/insertProduct" method="post"
-										enctype="multipart/form-data" autocomplete="off">
+									<form id="productForm" data-parsley-validate action="/admin/product" method="post">
+										<!-- enctype="multipart/form-data" autocomplete="off"  > -->
 										<h2 style="font-weight:bold;">판매 글 설정</h2>
 										
-										<label for="category">카테고리</label>
-										<select id="category" id="category" name="category" class="form-control">
+										<label for="categoryNo">카테고리</label>
+										<select id="categoryNo" name="categoryNo" class="form-control">
 											<c:forEach items="${ list }" var="category" varStatus="status">
 												<option value="${ category.no }">
 													${ category.name }
@@ -121,71 +191,11 @@
 										</script>
 										<br>
 										<label for="displayName">판매 글 제목 * :</label> 
-										<input type="text" id="displayName" class="form-control" name="displayName" />
+										<input type="text" id="title" class="form-control" name="title" />
 										<br>
 										
 										<label>상품 소개 작성</label>
 										<textarea id="summernote" name="content" ></textarea>
-										<input type="hidden" id='memberNo' name="memberNo" value="">
-										
-										<br><hr><br>
-										
-										<div class="row">
-										<div class="col-lg-4 col-md-6 mb-4">
-											<div class="card h-60">
-												<img class="card-img-top" src="http://placehold.it/500X500" alt="">
-												<div class="card-body">
-													대표 이미지
-													<input type="file" class="form-control" style="border:none;" value="파일 업로드" placeholder="File">
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4 col-md-6 mb-4">
-											<div class="card h-60">
-												<a><img class="card-img-top" src="http://placehold.it/500X500" alt=""></a>
-												<div class="card-body">
-													서브 이미지
-													<input type="file" class="form-control" style="border:none;" value="파일 업로드" placeholder="File">
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4 col-md-6 mb-4">
-											<div class="card h-60">
-												<img class="card-img-top" src="http://placehold.it/500X500" alt="">
-												<div class="card-body">
-													서브 이미지
-													<input type="file" class="form-control" style="border:none;" value="파일 업로드" placeholder="File">
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4 col-md-6 mb-4">
-											<div class="card h-60">
-												<img class="card-img-top" src="http://placehold.it/500X500" alt="">
-												<div class="card-body">
-													서브 이미지
-													<input type="file" class="form-control" style="border:none;" value="파일 업로드" placeholder="File">
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4 col-md-6 mb-4">
-											<div class="card h-60">
-												<img class="card-img-top" src="http://placehold.it/500X500" alt="">
-												<div class="card-body">
-													서브 이미지
-													<input type="file" class="form-control" style="border:none;" value="파일 업로드" placeholder="File">
-												</div>
-											</div>
-										</div>
-										<div class="col-lg-4 col-md-6 mb-4">
-											<div class="card h-60">
-												<img class="card-img-top" src="http://placehold.it/500X500" alt="">
-												<div class="card-body">
-													서브 이미지
-													<input type="file" class="form-control" style="border:none;" value="파일 업로드" placeholder="File">
-												</div>
-											</div>
-										</div>
-										</div>
 										
 										<br><hr><br>
 										
@@ -193,7 +203,7 @@
 										<br>
 										
 										<label for="price">상품 이름 * :</label> 
-										<input type="text" id="price" class="form-control" name="price" data-parsley-trigger="change" />
+										<input type="text" id="name" class="form-control" name="name" data-parsley-trigger="change" />
 										<br> 
 										
 										<label for="price">가격 * :</label> 
@@ -217,7 +227,7 @@
 													}
 													$('#optionTable').append(
 														'<label for="'+ option + '">'+option+'</label>' +
-													    '<input type="checkbox" id="' + option + '" name="option" value="' + option + '" checked><br>'                    
+													    '<input type="checkbox" id="' + option + '" class="optionClass" name="option" value="' + option + '" checked /><br>'                    
 													); 
 
 
@@ -231,10 +241,46 @@
 										<hr>
 										
 										
-										<button type="button" id='apply' class="btn btn-primary" style='width: 100%;'>등록</button>
+										<button type="button" id="apply" class="btn btn-primary" style='width: 100%;'>등록</button>
 										<br><br>
-										<button type="button" id='cancel' class="btn btn-danger" style='width: 100%;'>취소</button>
+										<a href="/product" id="cancel" class="btn btn-danger" style='width: 100%;'>취소</a>
 									</form>
+									<script>
+										$(function(){
+											$('#apply').click(function(){
+												var title = $("#title").val();
+												var content = $("#content").val();
+												var categoryNo = $('#categoryNo').val();
+												
+												var name = $('#name').val();
+												var price = $('#price').val();
+												var stock = $('#stock').val();
+												
+												var optionList = new Array(); 
+												$('input:checkbox[name="option"]:checked').each(function(){
+													optionList.push($(this).val());
+												});
+												
+												var productDTO = {title:title, content:content, categoryNo:categoryNo, name:name, price:price, stock:stock, optionList:optionList};
+												
+												$.ajax({ 
+											        url: "/admin/product",
+													type: "POST",
+													data: JSON.stringify(productDTO),
+													dataType: "json",
+													contentType:'application/json; charset=utf-8',
+													success: function(result){
+														
+													},
+													error: function(xhr, error){
+														
+													}
+											    }); 
+												
+
+											});
+										});
+									</script>
 									<!-- end form for validations -->
 								</div>
 							</div>

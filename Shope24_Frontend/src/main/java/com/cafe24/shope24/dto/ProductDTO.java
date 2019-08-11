@@ -3,6 +3,7 @@ package com.cafe24.shope24.dto;
 import java.util.List;
 
 import com.cafe24.shope24.vo.FileVo;
+import com.cafe24.shope24.vo.OptionVo;
 import com.cafe24.shope24.vo.ProductVo;
 
 public class ProductDTO {
@@ -18,6 +19,9 @@ public class ProductDTO {
 	
 	// 상품
 	private List<ProductVo> productList;
+
+	// 옵션
+	private List<OptionVo> optionList;
 
 	public Long getDisplayProductNo() {
 		return displayProductNo;
@@ -41,6 +45,10 @@ public class ProductDTO {
 
 	public List<ProductVo> getProductList() {
 		return productList;
+	}
+
+	public List<OptionVo> getOptionList() {
+		return optionList;
 	}
 
 	public void setDisplayProductNo(Long displayProductNo) {
@@ -67,11 +75,17 @@ public class ProductDTO {
 		this.productList = productList;
 	}
 
+	public void setOptionList(List<OptionVo> optionList) {
+		this.optionList = optionList;
+	}
+
 	@Override
 	public String toString() {
 		return "ProductDTO [displayProductNo=" + displayProductNo + ", categoryNo=" + categoryNo + ", title=" + title
-				+ ", content=" + content + ", fileList=" + fileList + ", productList=" + productList + "]";
+				+ ", content=" + content + ", fileList=" + fileList + ", productList=" + productList + ", optionList="
+				+ optionList + "]";
 	}
+	
 	
 	
 	
