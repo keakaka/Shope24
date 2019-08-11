@@ -36,18 +36,34 @@
 				</div>
 
 				<div class="row">
-					<div class="col-lg-4 col-md-6 mb-4">
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4">
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4">
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4">
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4">
-					</div>
-					<div class="col-lg-4 col-md-6 mb-4">
-					</div>
+					<h2> 고객 리스트 보기 </h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>아이디</th>
+                          <th>이름</th>
+                          <th>이메일</th>
+                          <th>생년월일</th>
+                          <th>성별</th>
+                          <th>연락처</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <c:forEach items='${list }' var='list' varStatus='status'>
+						<tr>
+							<td>${list.id }</td>
+							<td>${list.name }</td>
+							<td>${list.email }</td>
+							<td>${list.birth }</td>
+							<td>${list.gender }</td>
+							<td>${list.phone }</td>
+						</tr> 
+					</c:forEach>
+                      </tbody>
+                    </table>
 
 				</div>
 				<!-- /.row -->

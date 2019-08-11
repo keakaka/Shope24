@@ -2,6 +2,7 @@ package com.cafe24.shope24.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,17 @@ public class AdminController {
 		vo.setUrl("/assets/images/"+changeName);
 		
 		return new Gson().toJson(vo);
+	}
+	
+	@GetMapping("/memberList")
+	public String memberList(Model model, @AuthUser MemberVo authUser) {
+		if(authUser == null || !"ROLE_ADMIN".equals(authUser.getRole())) {
+			return "redirect:/";
+		}
+		
+		ArrayList<MemberVo> list = (ArrayList<MemberVo>) memberService.getmemberList();
+		model.addAttribute("list", list);
+		return "admin/memberList";
 	}
 	
 }

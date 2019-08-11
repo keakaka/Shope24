@@ -12,6 +12,7 @@ import com.cafe24.shope24.repository.AdminDao;
 import com.cafe24.shope24.vo.CategoryVo;
 import com.cafe24.shope24.vo.DisplayProductVo;
 import com.cafe24.shope24.vo.FileVo;
+import com.cafe24.shope24.vo.MemberVo;
 import com.cafe24.shope24.vo.ProductVo;
 @Service
 @Transactional
@@ -71,6 +72,11 @@ public class AdminService {
 		adminDao.insertProduct(productList);
 		
 		return true;
+	}
+
+	public ArrayList<MemberVo> getMemberList() {
+		
+		return adminDao.getMemberList();
 	}
 	
 }

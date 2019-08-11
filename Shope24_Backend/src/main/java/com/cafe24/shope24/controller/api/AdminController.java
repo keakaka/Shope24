@@ -124,9 +124,12 @@ public class AdminController {
 	}
 	
 	@ApiOperation(value="고객 관리")
-	@GetMapping("/customerManager")
-	public JSONResult customerManagement() {
-		return JSONResult.success(null);
+	@GetMapping("/memberList")
+	public ResponseEntity<JSONResult> customerManagement() {
+		System.out.println("오니?");
+		ArrayList<MemberVo> list = adminService.getMemberList();
+		System.out.println("리스트 = " + list);
+		return ResponseEntity.status(HttpStatus.OK).body(JSONResult.success(list));
 	}
 	
 	@ApiOperation(value="회원 탈퇴 처리")

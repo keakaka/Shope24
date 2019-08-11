@@ -11,6 +11,7 @@ import com.cafe24.shope24.dto.DisplayProductDTO;
 import com.cafe24.shope24.vo.CategoryVo;
 import com.cafe24.shope24.vo.DisplayProductVo;
 import com.cafe24.shope24.vo.FileVo;
+import com.cafe24.shope24.vo.MemberVo;
 import com.cafe24.shope24.vo.ProductVo;
 
 @Repository
@@ -19,6 +20,8 @@ public class AdminDao {
 	@Autowired
 	private SqlSession sqlSession;
 
+	private final String key = "FeelSoGoooooood";
+	
 	public CategoryVo insertCategory(CategoryVo vo) {
 		if(sqlSession.insert("admin.insertCategory", vo) == 1) {
 			return vo;
@@ -67,6 +70,10 @@ public class AdminDao {
 
 	public int insertProduct(List<ProductVo> productList) {
 		return sqlSession.insert("admin.insertProduct", productList);
+	}
+
+	public ArrayList<MemberVo> getMemberList() {
+		return (ArrayList)sqlSession.selectList("admin.getMemberList", key);
 	}
 	
 	

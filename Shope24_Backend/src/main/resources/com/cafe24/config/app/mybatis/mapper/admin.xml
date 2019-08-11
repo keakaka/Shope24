@@ -113,4 +113,15 @@
 		</choose>
 	</insert>
 	
+	<select id="getMemberList" resultType="membervo" parameterType="string">
+		<![CDATA[
+			select no, aes_decrypt(unhex(id), #{ key }) id, convert(aes_decrypt(unhex(name), #{ key }) using utf8) name,
+			aes_decrypt(unhex(email), #{ key }) email, aes_decrypt(unhex(birth), #{ key }) birth,
+			gender, aes_decrypt(unhex(phone), #{ key }) phone, joinDate
+			from member
+			where role = 'ROLE_USER'
+			and status = 'Y'
+		]]>
+	</select>
+	
 </mapper>

@@ -78,7 +78,7 @@
 			<div class="col-lg-3">
 				<h1 class="my-4">Shope24</h1>
 				<div class="list-group">
-					<a href="#" class="list-group-item">고객 관리</a> 
+					<a href="/admin/memberList" class="list-group-item">고객 관리</a> 
 					<a href="/admin/product" class="list-group-item">상품 관리</a> 
 					<a href="#" class="list-group-item">주문 관리</a>
 				</div>
