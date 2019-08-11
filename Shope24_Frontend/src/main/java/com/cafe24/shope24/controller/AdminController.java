@@ -22,6 +22,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cafe24.shope24.dto.ProductDTO;
+import com.cafe24.shope24.security.Auth;
+import com.cafe24.shope24.security.AuthUser;
 import com.cafe24.shope24.service.AdminService;
 import com.cafe24.shope24.service.MemberService;
 import com.cafe24.shope24.vo.CategoryVo;
@@ -31,6 +33,7 @@ import com.google.gson.Gson;
 
 @Controller
 @RequestMapping("/admin")
+@Auth
 public class AdminController {
 	
 	private final String PATH = "D:/cafe24/workspace/Shope24/Shope24_Frontend/src/main/webapp/assets/images/";
@@ -48,15 +51,25 @@ public class AdminController {
 	
 	@PostMapping("/login")
 	public String login (@ModelAttribute MemberVo memberVo, ModelAndView model) {
-		MemberVo vo = memberService.getAdmin(memberVo);
 		
-		model.addObject(vo);
+		MemberVo vo = memberService.getMember(memberVo);
+		if(vo.getRole() != "ROLE_ADMIN") {
+			return "redirect:/";
+		}
 		return "admin/main";
 	}
 	
+	@RequestMapping("/main")
+	public String goMain () {
+		return "admin/main";
+	}
+	
+	
 	@GetMapping("/product")
-	public String getProductPage(Model model) {
-		
+	public String getProductPage(Model model, @AuthUser MemberVo authUser) {
+		if(authUser == null || !"ROLE_ADMIN".equals(authUser.getRole())) {
+			return "redirect:/";
+		}
 		List<CategoryVo> list = adminService.getCategoryList();
 		model.addAttribute("list", list);
 		
@@ -65,8 +78,10 @@ public class AdminController {
 	
 	@PostMapping("/product")
 	@ResponseBody
-	public String insertProduct(@RequestBody Map<String, Object> productDTO) {
-		
+	public String insertProduct(@RequestBody Map<String, Object> productDTO, @AuthUser MemberVo authUser) {
+		if(authUser == null || !"ROLE_ADMIN".equals(authUser.getRole())) {
+			return "redirect:/";
+		}
 		System.out.println("ㅇ ㅗ니 오니오니");
 		System.out.println(productDTO);
 		
@@ -79,8 +94,10 @@ public class AdminController {
 	
 	@PostMapping("/imgUpload")
 	@ResponseBody
-	public String imgUpload(@RequestParam("file") MultipartFile file) {
-		
+	public String imgUpload(@RequestParam("file") MultipartFile file, @AuthUser MemberVo authUser) {
+		if(authUser == null || !"ROLE_ADMIN".equals(authUser.getRole())) {
+			return "redirect:/";
+		}
 		
 		String fileName = file.getOriginalFilename();
 		String changeName = System.currentTimeMillis()+"."+fileName.substring(fileName.lastIndexOf(".")+1);

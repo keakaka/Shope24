@@ -39,4 +39,21 @@ public class MemberController {
 		String result = memberService.insertMember(memberVo);
 		return result;
 	}
+	
+	@PostMapping("/login")
+	public String memberLogin(@ModelAttribute MemberVo memberVo) {
+		memberService.getMember(memberVo);
+		return "main/index";
+	}
+	
+	@PostMapping("/auth")
+	public String authLogin() {
+		return "main/index";
+	}
+	
+	@GetMapping("/logout")
+	public String authLogout() {
+		return "main/index";
+	}
+	
 }

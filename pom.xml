@@ -20,7 +20,7 @@
 		<jcloverslf4j.version>1.7.6</jcloverslf4j.version>
 		<logback.version>1.1.1</logback.version>
 	</properties>
-	
+
 	<dependencies>
 		<!-- Spring Core -->
 		<dependency>
@@ -48,7 +48,7 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<!-- Logback -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -60,7 +60,7 @@
 			<artifactId>logback-classic</artifactId>
 			<version>${logback.version}</version>
 		</dependency>
-		
+
 		<!-- Spring Aspect -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -74,32 +74,32 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
-		
+
 		<!-- Spring Security -->
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-core</artifactId>
-		    <version>${org.springframework.security-version}</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${org.springframework.security-version}</version>
 		</dependency>
 
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-config</artifactId>
-		    <version>${org.springframework.security-version}</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${org.springframework.security-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-		    <version>${org.springframework.security-version}</version>
+			<version>${org.springframework.security-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-acl</artifactId>
-		    <version>${org.springframework.security-version}</version>
+			<version>${org.springframework.security-version}</version>
 		</dependency>
-		
+
 		<!-- jackson -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -111,7 +111,7 @@
 			<artifactId>jackson-module-parameter-names</artifactId>
 			<version>2.9.8</version>
 		</dependency>
-		
+
 		<!-- common fileupload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
@@ -123,9 +123,9 @@
 			<artifactId>commons-io</artifactId>
 			<version>1.4</version>
 		</dependency>
-		
+
 	</dependencies>
-	
+
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>

@@ -19,7 +19,7 @@
  	<div class="container">
  		<div class="card card-container">
 	 		<label style="text-align:center; font-weight:bold;"> Shope24 관리자 로그인 페이지 </label>
-            <form method="post" action="/admin/login" class="form-signin" name="loginForm">
+            <form method="post" action="/user/auth" class="form-signin" name="loginForm">
                 <span id="reauth-email" class="reauth-email"></span>
                 <input type="text" id="id" class="form-control" placeholder="ID" name="id" required autofocus>
                 <input type="password" id="password" class="form-control" placeholder="Password" name="password" required>

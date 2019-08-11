@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.cafe24.shope24.controller", "com.cafe24.shope24.exception", "com.cafe24.shope24.controller.api"})
-@Import({MVCConfig.class, MessageConfig.class, FileuploadConfig.class})
+@ComponentScan({"com.cafe24.shope24.controller", "com.cafe24.shope24.exception"})
+@Import({MVCConfig.class, MessageConfig.class, FileuploadConfig.class, SecurityConfig.class})
 public class WebConfig{
 }

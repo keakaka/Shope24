@@ -13,37 +13,26 @@
 			<ul class="navbar-nav ml-auto">
 
 				<c:choose>
-					<c:when test='${param.active == "login" }'>
+					<c:when test='${authUser ne null }'>
 						<li class="nav-item">
 							<a class="nav-link" href="/">홈</a>
-						</li>
-						<li class="nav-item active">
-							<a class="nav-link" href="/user/login">로그인/회원가입<span class="sr-only">(current)</span></a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/cs">고객센터</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="/user/logout">로그아웃</a>
+						</li>
 					</c:when>
-					<c:when test='${param.active == "cs" }'>
-						<li class="nav-item">
-							<a class="nav-link" href="/">홈</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/user/login">로그인/회원가입</a>
-						</li>
-						<li class="nav-item active">
-							<a class="nav-link" href="/cs">고객센터<span class="sr-only">(current)</span></a>
-						</li>
-					</c:when>					
 					<c:otherwise>
 						<li class="nav-item active">
 							<a class="nav-link" href="/">홈<span class="sr-only">(current)</span></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/user/login">로그인/회원가입</a>
+							<a class="nav-link" href="/cs">고객센터</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/cs">고객센터</a>
+							<a class="nav-link" href="/user/login">로그인/회원가입</a>
 						</li>
 					</c:otherwise>				
 				</c:choose>

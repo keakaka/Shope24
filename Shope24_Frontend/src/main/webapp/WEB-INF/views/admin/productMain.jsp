@@ -106,7 +106,7 @@
 									
 									<br><br>
 									<div class="row imgArea">
-									
+										<img src="${pageContext.servletContext.contextPath }/images/1565552390177.jpg" />
 									</div>
 									
 									<script>
@@ -143,7 +143,7 @@
 							                        	
 							                            $area = $('.imgArea');
 							                            $div = $('<div class="col-lg-3 col-md-3 mb-3">')
-							                            $img = $('<img class="col-lg-12 col-md-12 mb-12" name="'+obj.fileName+'" alt="이미지" src="${pageContext.servletContext.contextPath }' + obj.url + '" />');
+							                            $img = $('<img class="col-lg-12 col-md-12 mb-12" name="'+obj.fileName+'" alt="이미지" src="' + obj.url + '" />');
 							                            $btn = $('<button class="delBtn btn btn-danger btn-xs" style="margin-left:40%;">X</button>');
 							                            $input = $('<input type="hidden" value="' + obj.changeName + '" />');
 							                            
@@ -156,6 +156,7 @@
 							                            $(function(){
 							                            	$('.delBtn').click(function(){
 							                            		console.log($(this).parent());
+							                            		console.log(img);
 							                            	});
 							                            });
 							                            

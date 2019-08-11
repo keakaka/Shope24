@@ -28,16 +28,16 @@
 <div class="login_wrapper">
 <div class="animate form login_form">
 <section class="login_content">
-<form>
+<form action="/user/auth" method="post">
 <h1>로 그 인</h1>
 <div>
-<input type="text" class="form-control" placeholder="ID"/>
+<input type="text" class="form-control" name="id" placeholder="ID"/>
 </div>
 <div>
-<input type="password" class="form-control" placeholder="Password"/>
+<input type="password" class="form-control" name="password" placeholder="Password"/>
 </div>
 <div>
-<button id="login" class="btn btn-default">로그인</button>
+<button type="submit" id="login" class="btn btn-default">로그인</button>
 <a class="reset_pass" href="#">비밀번호를 잃어버리셨습니까?</a>
 </div>
 <div class="clearfix"></div>

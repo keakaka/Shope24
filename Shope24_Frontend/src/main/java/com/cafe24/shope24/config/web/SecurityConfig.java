@@ -1,20 +1,21 @@
 package com.cafe24.shope24.config.web;
-/*package com.cafe24.shope24.config;
 
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.cafe24.security.AuthInterceptor;
-import com.cafe24.security.AuthLoginInterceptor;
-import com.cafe24.security.AuthLogoutInterceptor;
-import com.cafe24.security.AuthUserHandlerMethodArgumentResolver;
+import com.cafe24.shope24.security.AuthInterceptor;
+import com.cafe24.shope24.security.AuthLoginInterceptor;
+import com.cafe24.shope24.security.AuthLogoutInterceptor;
+import com.cafe24.shope24.security.AuthUserHandlerMethodArgumentResolver;
 
 @Configuration
+@EnableWebMvc
 public class SecurityConfig extends WebMvcConfigurerAdapter {
 
 	// Argument Resolver
@@ -62,4 +63,3 @@ public class SecurityConfig extends WebMvcConfigurerAdapter {
 	}
 	
 }
-*/

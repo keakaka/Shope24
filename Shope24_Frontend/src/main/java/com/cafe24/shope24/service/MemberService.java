@@ -37,9 +37,16 @@ public class MemberService {
 		
 	}
 
-	public MemberVo getMember(String username) {
-		
-		return null;
+	public MemberVo getMember(MemberVo memberVo) {
+		ResponseEntity<JSONResult> result = 
+				restTemplate.postForEntity("http://localhost:8080/Shope24_Backend/api/member/login", memberVo, JSONResult.class);
+		MemberVo vo = null;
+		if("success".equals(String.valueOf(result.getBody().getResult()))) {
+			vo = new Gson().fromJson(result.getBody().getData().toString(), MemberVo.class);
+			return vo;
+		}else {
+			return vo;
+		}
 	}
 
 	public MemberVo getAdmin(MemberVo memberVo) {
