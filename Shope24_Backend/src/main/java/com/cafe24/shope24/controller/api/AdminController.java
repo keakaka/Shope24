@@ -112,6 +112,9 @@ public class AdminController {
 	@ApiOperation(value="상품 등록")
 	@PostMapping("/productManager/product")
 	public JSONResult insertProduct( @RequestBody DisplayProductDTO dto ) {
+		
+		System.out.println(dto);
+		
 		Boolean check = adminService.insertProduct(dto);
 		
 		return JSONResult.success(check?"등록성공":"등록실패");

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <div class="col-md-3 left_col">
 <div class="left_col scroll-view">
 <div class="navbar nav_title" style="border: 0;">
@@ -19,7 +18,7 @@
 </li>
 <li><a><i class="fa fa-desktop"></i> 상품 관리 <span class="fa fa-chevron-down"></span></a>
 <ul class="nav child_menu">
-<li><a href="general_elements.html">카테고리 등록</a></li>
+<li><a href="/admin/category">카테고리 등록</a></li>
 <li><a href="/admin/product">상품 등록</a></li>
 <li><a href="typography.html">상품 수정</a></li>
 <li><a href="icons.html">진열 상태 변경</a></li>

@@ -19,6 +19,7 @@ public class ProductDTO {
 	
 	// 상품
 	private List<ProductVo> productList;
+	private String name;
 
 	// 옵션
 	private List<OptionVo> optionList;

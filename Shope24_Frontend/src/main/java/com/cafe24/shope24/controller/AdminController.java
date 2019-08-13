@@ -32,6 +32,8 @@ import com.cafe24.shope24.service.MemberService;
 import com.cafe24.shope24.vo.CategoryVo;
 import com.cafe24.shope24.vo.FileVo;
 import com.cafe24.shope24.vo.MemberVo;
+import com.cafe24.shope24.vo.OptionVo;
+import com.cafe24.shope24.vo.ProductVo;
 import com.google.gson.Gson;
 
 @Controller
@@ -86,12 +88,24 @@ public class AdminController {
 		if(authUser == null || !"ROLE_ADMIN".equals(authUser.getRole())) {
 			return "redirect:/";
 		}
-		System.out.println("ㅇ ㅗ니 오니오니");
-		System.out.println(productDTO);
+		
+		adminService.insertProduct(productDTO);
+		
 		
 		
 		
 		return "";
+	}
+	
+	@GetMapping("/category")
+	public String getCategoryPage(Model model, @AuthUser MemberVo authUser) {
+		if(authUser == null || !"ROLE_ADMIN".equals(authUser.getRole())) {
+			return "redirect:/";
+		}
+		List<CategoryVo> list = adminService.getCategoryList();
+		model.addAttribute("list", list);
+		
+		return "admin/categoryAdd";
 	}
 	
 	

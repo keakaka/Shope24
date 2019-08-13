@@ -14,53 +14,15 @@
 <title> Shope24 </title>
 
 <link href="/assets/admin/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <link href="/assets/admin/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-
 <link href="/assets/admin/vendors/nprogress/nprogress.css" rel="stylesheet">
-
 <link href="/assets/admin/build/css/custom.min.css" rel="stylesheet">
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<link href="/assets/summernote/dist/summernote.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-lite.js"></script>
+
 </head>
-<script type="text/javascript">
-        function sendFile(file, editor) {
-        	
-			data = new FormData();
-			data.append("uploadFile", file);
-           
-			console.log(data);
-		    $.ajax({ // ajax를 통해 파일 업로드 처리
-		        data : data,
-		        type : "POST",
-		        url : "/imgUpload",
-		        cache : false,
-		        contentType : false,
-		        processData : false,
-		        success : function(data) { 
-		           $(editor).summernote('editor.insertImage', data.url);
-		        },
-		        error:function(request,status,error){
-		           alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		         
-		        
-		        }
-		    });   
-		}
-       
-       function deleteFile(src) {
-    	    $.ajax({
-    	        data: {src : src},
-    	        type: "POST",
-    	        url: "/imgDelete",
-    	        cache: false,
-    	        success: function(data) {
-    	            console.log(data);
-    	            alert('삭제완료');
-    	        }
-    	    });
-    	};
-   </script>
 <body class="nav-md">
 <div class="container body">
 <div class="main_container">
@@ -84,19 +46,19 @@
 		        </form>
 				
 				<br><br>
-				<div class="row imgArea">
-					
-				</div>
+				
 				
 				<script>
+				
+				// 이미지 업로드 부분
 				
 				$(function(){  
 					
 	                $('#imgBtn').change(function(){
 	                	if($('#imgBtn').get(0).files.length != 0){
 	                		var form = $('#FILE_FORM')[0];
-							var form_data = new FormData(form);
 							var file = $(this)[0].files[0];
+							var form_data = new FormData(form);
 							form_data.append('file', file);
 							
 							var ext = file.name.split(".").pop().toLowerCase();
@@ -142,7 +104,6 @@
 		        		                        url: "/admin/imgDelete?fileName="+fileName,
 		        		                        type: "get",
 		        		                        success: function(result) {
-		        		                        	
 		        		                        },
 		        		                        error: function(error) {
 		        		                        	check = false;
@@ -166,6 +127,10 @@
 				</script>
 				
 				<form id="productForm" data-parsley-validate action="/admin/product" method="post">
+					<div class="row imgArea">
+					
+					</div>
+					
 					<!-- enctype="multipart/form-data" autocomplete="off"  > -->
 					<h2 style="font-weight:bold;">판매 글 설정</h2>
 					
@@ -190,7 +155,7 @@
 					<br>
 					
 					<label>상품 소개 작성</label>
-					<textarea id="summernote" name="content" ></textarea>
+					<textarea id="summernote" name="content" class="content"></textarea>
 					
 					<br><hr><br>
 					
@@ -244,7 +209,8 @@
 					$(function(){
 						$('#apply').click(function(){
 							var title = $("#title").val();
-							var content = $("#content").val();
+							var content = $(".content").val();
+							console.log(content);
 							var categoryNo = $('#categoryNo').val();
 							
 							var name = $('#name').val();
@@ -255,8 +221,13 @@
 							$('input:checkbox[name="option"]:checked').each(function(){
 								optionList.push($(this).val());
 							});
+							var fileList = new Array();
+							console.log('이미지 밸류?');
+							$('.imgArea img').each(function(){
+								fileList.push($(this).attr('src'));
+							});
 							
-							var productDTO = {title:title, content:content, categoryNo:categoryNo, name:name, price:price, stock:stock, optionList:optionList};
+							var productDTO = {title:title, content:content, categoryNo:categoryNo, name:name, price:price, stock:stock, optionList:optionList, fileList:fileList};
 							
 							$.ajax({
 						        url: "/admin/product",
@@ -288,88 +259,94 @@
 </div>
 </div>
 
-<!-- include summernote css/js -->
-<script src="/assets/summernote/dist/summernote.js"></script>
-
-<script>
-	$(document).ready(function() {
-		var fileExtension = [ '.jpg', '.png', '.jpeg', '.gif', ];
-		$('#summernote').summernote({
-			height : 300,
-			lang : 'ko-KR',
-			toolbar : [ 
-				['style',
-					[
-					'bold',
-					'italic',
-					'underline',
-					'clear' 
-					]
-				],
-				[
-				'font',
-					[
-					'strikethrough',
-					'superscript',
-					'subscript' 
-					] 
-				],
-				[ 'fontsize',
-				[ 'fontname', 'fontsize' ] ],
-				[ 'color', [ 'color' ] ],
-				[ 'para', [ 'ul', 'ol', 'paragraph' ] ],
-				[ 'height', [ 'height' ] ],
-				[ 'insert', [ 'picture',
-								'link',
-								'video',
-								'table',
-								'hr' ] ] ],
-				callbacks : { 
-					onImageUpload : function(files, editor, welEditable) {
-						
-						for (var i = files.length - 1; i >= 0; i--) {
-							for (var j = 0; j < fileExtension.length; j++) {
-								var extleng = files[i].name.length;
-								var extdot = files[i].name
-										.lastIndexOf('.');
-								var ext = files[i].name.substring( extdot, extleng ).toLowerCase();
-								console.log(ext + ' / ' + fileExtension[j])
-								if (ext == fileExtension[j]) {
-									sendFile( files[i], this );
-								}
-							}
-						}
-					},
-							onMediaDelete : function(target) {
-								alert(target[0].src);
-								deleteFile(target[0].src);
-								console.log(target[0].src)
-							}
-						}
-					});
-			});
-</script>
 
 
-<script src="/assets/admin/vendors/jquery/dist/jquery.min.js" type="dcdbae246a372a62707f1393-text/javascript"></script>
 
 <script src="/assets/admin/vendors/bootstrap/dist/js/bootstrap.min.js" type="dcdbae246a372a62707f1393-text/javascript"></script>
-
 <script src="/assets/admin/vendors/fastclick/lib/fastclick.js" type="dcdbae246a372a62707f1393-text/javascript"></script>
-
 <script src="/assets/admin/vendors/nprogress/nprogress.js" type="dcdbae246a372a62707f1393-text/javascript"></script>
-
 <script src="/assets/admin/build/js/custom.min.js" type="dcdbae246a372a62707f1393-text/javascript"></script>
+<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/95c75768/cloudflare-static/rocket-loader.min.js" data-cf-settings="dcdbae246a372a62707f1393-|49" defer=""></script>
 
-<script type="dcdbae246a372a62707f1393-text/javascript">
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<script>
+$(document).ready(function() {
+var fileExtension = [ '.jpg', '.png', '.jpeg', '.gif', ];
+$('#summernote').summernote({
+	height : 300,
+	lang : 'ko-KR',
+	popover: {
+        image: [
+            ['imagesize', ['imageSize100', 'imageSize50', 'imageSize25']],
+            ['float', ['floatLeft', 'floatRight', 'floatNone']],
+            ['custom', ['imageAttributes', 'imageShape']],
+            ['remove', ['removeMedia']]
+        ],
+    },
+    toolbar : [ 
+    			['style', ['bold', 'italic', 'underline', 'clear'] ], 
+    			['font', ['strikethrough', 'superscript', 'subscript'] ], 
+    			['fontsize', [ 'fontname', 'fontsize' ] ], 
+    			[ 'color', [ 'color' ] ],
+				[ 'para', [ 'ul', 'ol', 'paragraph' ] ],
+				[ 'height', [ 'height' ] ],
+				[ 'insert', [ 'picture', 'link', 'video', 'table', 'hr' ] ]
+    		],
+	callbacks : {
+		onImageUpload : function(files, editor, welEditable) {
+			for (var i = files.length - 1; i >= 0; i--) {
+				for (var j = 0; j < fileExtension.length; j++) {
+					var extleng = files[i].name.length;
+					var extdot = files[i].name
+							.lastIndexOf('.');
+					var ext = files[i].name.substring( extdot, extleng ).toLowerCase();
+					if (ext == fileExtension[j]) {
+						sendFile( files[i], $(this) );
+					}
+				}
+			}
+		},
+		
+		onMediaDelete : function(target) {
+			deleteFile(target[0].src);
+		}
+	}
+});
+});
 
-ga('create', 'UA-23581568-13', 'auto');
-ga('send', 'pageview');
+	function sendFile(file, editor) {
+		data = new FormData();
+		data.append("file", file);
+	
+		$.ajax({
+		    data : data,
+		    type : "POST",
+		    url : "/admin/imgUpload",
+		    cache : false,
+		    contentType : false,
+		    processData : false,
+		    success : function(result) { 
+		    	data = JSON.parse(result);
+				$(editor).summernote('editor.insertImage', data.url);
+		       
+		    },
+		    error:function(request,status,error){
+		       alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
+		});   
+	}
+	
+	function deleteFile(src) {
+		var fileName = src.split('/')[4];
+		$.ajax({
+		    type: "get",
+		    url: "/admin/imgDelete?fileName="+fileName,
+		    cache: false,
+		    success: function(data) {
+		    }
+		});
+	};
 
+	
 </script>
-<script src="https://ajax.cloudflare.com/cdn-cgi/scripts/95c75768/cloudflare-static/rocket-loader.min.js" data-cf-settings="dcdbae246a372a62707f1393-|49" defer=""></script></body>
+</body>
 </html>
