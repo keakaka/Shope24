@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+
+	<insert id="insertCategory" parameterType="categoryvo">
+		<choose>
+			<when test="groupNo == null">
+				<![CDATA[
+				insert
+				  into category
+				values ( null,
+						 #{name },
+						 ( select ifnull( max( groupNo ), 0 ) + 1
+						     from category c ),
+						 1, 
+						 0)
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				insert
+				  into category
+				values ( null,
+						 #{name },
+						 #{groupNo },
+						 #{groupSeq }+1, 
+						 #{depth }+1)				
+				]]>
+			</otherwise>
+		</choose>
+	</insert>
+	
+	<update id="updateGroupSeq" parameterType="map">
+		<![CDATA[
+			update category
+			   set groupSeq = groupSeq + 1
+			 where groupNo = #{groupNo }
+			   and groupSeq > #{groupSeq }
+		]]>	
+	</update>	
+	
+	<select id="getCategoryList" resultType="categoryvo">
+		<![CDATA[
+			select no, name, groupNo, groupSeq, depth
+			from category
+			order by groupNo asc, groupSeq asc		
+		]]>
+	</select>
+	
+	<delete id="deleteCategory" parameterType="categoryvo">
+		<![CDATA[
+			delete from category where no = #{ no }
+		]]>
+	</delete>
+	
+	<update id="groupSeqDown" parameterType="categoryvo">
+		<![CDATA[
+			update category set
+			groupSeq = groupSeq - 1
+			where groupNo = #{ groupNo }
+			and groupSeq > #{ groupSeq }
+		]]>
+	</update>
+	
+	<update id="updateCategory" parameterType="java.util.List">
+		<choose>
+			<when test="list.size != 0">
+				<foreach collection="list" item="vo" separator=";">
+					<![CDATA[
+						update category set groupSeq = #{ vo.groupSeq }, depth = #{ vo.depth }, name = #{ vo.name } where no = #{ vo.no }
+					]]>
+				</foreach>
+			</when>
+		</choose>
+	</update>
+	
+	<insert id="insertDisplayProduct" parameterType="displayproductvo">
+		<![CDATA[
+			insert 
+		    into displayproduct 
+		    values(null, #{ categoryNo }, #{ title }, #{ content }, now(), default, default)	
+		]]>
+		<selectKey keyProperty="no" resultType="long" order="AFTER">
+			<![CDATA[
+				select last_insert_id()
+			]]>
+		</selectKey>
+	</insert>
+	
+	<insert id="insertFile" parameterType="java.util.List">
+		<choose>
+			<when test="list.size != 0">
+				insert into productImage values
+				<foreach collection="list" item="vo" separator=",">
+					<![CDATA[
+						( null, #{ vo.displayProductNo }, #{ vo.oriName }, #{ vo.oriName }, #{ vo.url }, #{ vo.status }, now() )
+					]]>
+				</foreach>
+			</when>
+		</choose>
+	</insert>
+	
+	<insert id="insertProduct" parameterType="java.util.List">
+		<choose>
+			<when test="list.size != 0">
+				insert into product values
+				<foreach collection="list" item="vo" separator=",">
+					<![CDATA[
+						( null, #{ vo.name }, #{ vo.stock }, #{ vo.activeStock }, #{ vo.price }, #{ vo.option }, default, #{ vo.displayProductNo } )
+					]]>
+				</foreach>
+			</when>
+		</choose>
+	</insert>
+	
+	<select id="getMemberList" resultType="membervo" parameterType="string">
+		<![CDATA[
+			select no, aes_decrypt(unhex(id), #{ key }) id, convert(aes_decrypt(unhex(name), #{ key }) using utf8) name,
+			aes_decrypt(unhex(email), #{ key }) email, aes_decrypt(unhex(birth), #{ key }) birth,
+			gender, aes_decrypt(unhex(phone), #{ key }) phone, joinDate
+			from member
+			where role = 'ROLE_USER'
+			and status = 'Y'
+		]]>
+	</select>
+	
+</mapper>

@@ -3,7 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+
+<style>
+	ul li{
+		color:black;
+	}
+</style>
+<nav class="navbar navbar-expand-lg navbar-black bg-black fixed-top">
 	<div class="container">
 		<a class="navbar-brand" href="#">&nbsp;</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

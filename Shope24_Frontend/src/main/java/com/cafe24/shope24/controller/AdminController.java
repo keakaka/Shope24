@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +39,8 @@ import com.google.gson.Gson;
 @Auth
 public class AdminController {
 	
-	private final String PATH = "D:/cafe24/workspace/Shope24/Shope24_Frontend/src/main/webapp/assets/images/";
+	private final String PATH = "/shope24-uploads/";
+	
 	
 	@Autowired
 	private MemberService memberService;
@@ -95,7 +98,7 @@ public class AdminController {
 	
 	@PostMapping("/imgUpload")
 	@ResponseBody
-	public String imgUpload(@RequestParam("file") MultipartFile file, @AuthUser MemberVo authUser) {
+	public String imgUpload(@RequestParam("file") MultipartFile file, @AuthUser MemberVo authUser, HttpSession session) {
 		if(authUser == null || !"ROLE_ADMIN".equals(authUser.getRole())) {
 			return "redirect:/";
 		}
@@ -114,10 +117,24 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		
-		vo.setUrl("/assets/images/"+changeName);
-		
+		vo.setUrl("/images/"+changeName);
+
 		return new Gson().toJson(vo);
 	}
+	
+	@GetMapping("/imgDelete")
+	@ResponseBody
+	public String imgDelete(@RequestParam("fileName") String fileName, @AuthUser MemberVo authUser) {
+		if(authUser == null || !"ROLE_ADMIN".equals(authUser.getRole())) {
+			return "redirect:/";
+		}
+		
+		File file = new File(PATH+fileName);
+
+		if( file.exists()) file.delete();
+		return "success";
+	}
+	
 	
 	@GetMapping("/memberList")
 	public String memberList(Model model, @AuthUser MemberVo authUser) {

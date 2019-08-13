@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<select id="checkId" resultType="string" parameterType="membervo">
+		<![CDATA[	 
+			select id
+			from member 
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )
+		]]>
+	</select>
+	<insert id="insertMember" parameterType="membervo">
+		<![CDATA[	 
+			insert into member values( null, 
+				hex( aes_encrypt( #{ id }, #{ key } ) ), SHA2(#{ password }, 512), hex( aes_encrypt( #{ name }, #{ key } ) ), hex( aes_encrypt( #{ email }, #{ key } ) ),
+				hex( aes_encrypt( #{ birth }, #{ key } ) ), #{ gender }, hex( aes_encrypt( #{ phone }, #{ key } ) ), current_timestamp(), default, 'Y'
+			)
+		]]>
+	</insert>
+	
+	<select id="login" resultType="membervo" parameterType="membervo">
+		<![CDATA[	 
+			select no, aes_decrypt(unhex(id), #{ key }) id, convert(aes_decrypt(unhex(name), #{ key }) using utf8) name,
+			aes_decrypt(unhex(email), #{ key }) email, aes_decrypt(unhex(birth), #{ key }) birth,
+			gender, aes_decrypt(unhex(phone), #{ key }) phone, joinDate, role
+			from member
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )
+			and password = SHA2( #{ password }, 512 )
+			and status = 'Y';
+		]]>
+	</select>
+	
+	<select id="getAdmin" resultType="membervo" parameterType="membervo">
+		<![CDATA[	 
+			select aes_decrypt(unhex(id), #{ key }) id, role
+			from member
+			where id = hex( aes_encrypt( #{ id }, #{ key } ) )
+			and password = SHA2( #{ password }, 512 )
+			and status = 'Y'
+			and role = 'ROLE_ADMIN';
+		]]>
+	</select>
+	
+</mapper>
